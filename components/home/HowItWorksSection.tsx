@@ -47,11 +47,12 @@ export default function HowItWorksSection() {
             minWidth: 260,
           }}
         >
-          Four easy steps to earning
+          Four easy steps to get started
         </h2>
 
         {/* Steps as cards */}
         <div className="reveal grid grid-cols-1 md:grid-cols-4 gap-6" style={{ transitionDelay: '160ms' }}>
+
           {steps.map((step) => (
             <div
               key={step.num}
@@ -117,6 +118,13 @@ export default function HowItWorksSection() {
             </div>
           ))}
         </div>
+
+        {/* Caveat + resources link */}
+        <p className="reveal" style={{ fontFamily: 'var(--font-manrope)', fontSize: 13, color: 'rgba(7,59,76,0.45)', marginTop: 32, transitionDelay: '240ms' }}>
+          <a href="/resources" style={{ color: 'rgba(7,59,76,0.55)', textDecoration: 'underline', textUnderlineOffset: 3 }}>
+            Still have questions? Visit our resources →
+          </a>
+        </p>
       </div>
     </section>
   );

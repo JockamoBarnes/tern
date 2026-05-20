@@ -1,4 +1,5 @@
 const rows = [
+  { label: 'Pay with credit card',    cheque: false, bank: false, tern: true  },
   { label: 'Earn rewards on payment', cheque: false, bank: false, tern: true  },
   { label: 'No bounced payment risk', cheque: false, bank: true,  tern: true  },
   { label: 'No fee to tenant',        cheque: true,  bank: false, tern: true  },
@@ -165,9 +166,6 @@ export default function ComparisonSection() {
           </div>
         </div>
 
-        <p className="reveal" style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.3)', marginTop: 20, transitionDelay: '280ms' }}>
-          Cheque-based payment still issued where required by lease. Tern handles disbursement.
-        </p>
       </div>
     </section>
   );

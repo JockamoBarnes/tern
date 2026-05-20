@@ -129,16 +129,16 @@ export default function HeroSection() {
             transitionDelay: '80ms',
           }}
         >
-          Pay rent with your credit card. Earn rewards. No fees.
+          Pay rent with your credit card — directly to your landlord, on time, every time. Rewards are just the bonus.
         </p>
 
         {/* CTA */}
         <div className="reveal" style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 20, transitionDelay: '160ms', flexWrap: 'wrap' }}>
           <a href="#download" className="btn-cta">
-            Start Earning Rewards
+            Pay Rent with Your Card
           </a>
           <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 500, fontSize: 13, color: 'rgba(238,247,248,0.55)', margin: 0 }}>
-            Join over 1,500 renters earning rewards
+            Join over 1,500 UAE renters already using Tern
           </p>
         </div>
 
@@ -153,7 +153,7 @@ export default function HeroSection() {
             transitionDelay: '240ms',
           }}
         >
-          Regulated by CBUAE&nbsp;&nbsp;·&nbsp;&nbsp;DLD Registered&nbsp;&nbsp;·&nbsp;&nbsp;No fees to tenants
+          Regulated by CBUAE&nbsp;&nbsp;·&nbsp;&nbsp;DLD Registered&nbsp;&nbsp;·&nbsp;&nbsp;No fees to tenants&nbsp;&nbsp;·&nbsp;&nbsp;Start at any point in your lease
         </p>
       </div>
     </section>

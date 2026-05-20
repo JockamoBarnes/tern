@@ -106,6 +106,8 @@ export default function Footer() {
                     transition: 'color 200ms ease',
                     whiteSpace: 'nowrap',
                   }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(238,247,248,0.9)')}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(238,247,248,0.5)')}
                 >
                   {link.label}
                 </Link>
