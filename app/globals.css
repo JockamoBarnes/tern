@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* ── Brand tokens ── */
+:root {
+  --mint:        #15EAAD;
+  --teal:        #073B4C;
+  --light-mint:  #D0FBEF;
+  --near-white:  #EEF7F8;
+  --white:       #FFFFFF;
+
+  --grad-cta:    linear-gradient(90deg, #15EAAD, #4DB6CE);
+  --grad-light:  linear-gradient(140deg, #D0FBEF, #EEF7F8);
+  --grad-head:   linear-gradient(105deg, #15EAAD 30%, #4DB6CE);
+}
+
+/* ── Tailwind v4 theme ── */
+@theme inline {
+  --color-mint:      #15EAAD;
+  --color-teal:      #073B4C;
+  --color-light-mint:#D0FBEF;
+  --color-near-white:#EEF7F8;
+  --font-sans:       var(--font-manrope), sans-serif;
+  --font-display:    var(--font-unbounded), sans-serif;
+}
+
+/* ── Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-manrope), sans-serif;
+  background-color: var(--teal);
+  color: var(--near-white);
+  margin: 0;
+}
+
+/* ── Focus states — mint outline on all interactive elements ── */
+:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+/* ── CTA button — grad-cta bg, teal text ── */
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grad-cta);
+  color: var(--teal);
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  padding: 14px 32px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 150ms ease, box-shadow 150ms ease;
+  min-height: 48px;
+  white-space: nowrap;
+}
+.btn-cta:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 0 24px rgba(21,234,173,0.45);
+}
+
+/* ── CTA button small — same system, compact size ── */
+.btn-cta-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grad-cta);
+  color: var(--teal);
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 150ms ease, box-shadow 150ms ease;
+  min-height: 40px;
+  white-space: nowrap;
+}
+.btn-cta-sm:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 0 16px rgba(21,234,173,0.4);
+}
+
+/* ── Closing CTA button — teal bg, mint text ── */
+.btn-cta-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--teal);
+  color: var(--mint);
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  padding: 14px 32px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 150ms ease, box-shadow 150ms ease;
+  min-height: 48px;
+  white-space: nowrap;
+}
+.btn-cta-dark:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 24px rgba(7,59,76,0.3);
+}
+
+/* ── Calc input focus ring ── */
+.calc-input:focus {
+  border-color: var(--mint) !important;
+  box-shadow: 0 0 0 3px rgba(21,234,173,0.15);
+  outline: none;
+}
+
+/* ── Nav link ── */
+.nav-link {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: rgba(238,247,248,0.55);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.nav-link:hover {
+  color: rgba(238,247,248,0.9);
+}
+
+/* ── Partner marquee ── */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-left  { animation: marquee-left  linear infinite; }
+.marquee-right { animation: marquee-right linear infinite; }
+.marquee-row:hover .marquee-left,
+.marquee-row:hover .marquee-right {
+  animation-play-state: paused;
+}
+
+/* ── Gradient section divider ── */
+.grad-divider {
+  position: relative;
+}
+.grad-divider::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(21,234,173,0.35), transparent);
+  pointer-events: none;
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
