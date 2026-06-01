@@ -17,7 +17,7 @@ export default function ScrollRevealProvider() {
           }
         });
       },
-      { threshold: 0.08 }
+      { threshold: 0.15 }
     );
 
     elements.forEach((el) => {

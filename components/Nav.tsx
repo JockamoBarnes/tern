@@ -2,12 +2,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => {
@@ -27,6 +29,7 @@ export default function Nav() {
   }, []);
 
   return (
+    <>
     <header
       className="fixed top-0 z-50 w-full transition-all duration-300"
       style={{
@@ -70,9 +73,9 @@ export default function Nav() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-10">
-          <Link href="/tenants" className="nav-link">Tenants</Link>
-          <Link href="/landlords" className="nav-link">Landlords</Link>
-          <Link href="/resources" className="nav-link">Resources</Link>
+          <Link href="/" className={`nav-link${pathname === '/' ? ' active' : ''}`}>Tenants</Link>
+          <Link href="/landlords" className={`nav-link${pathname.startsWith('/landlords') ? ' active' : ''}`}>Landlords</Link>
+          <Link href="/resources" className={`nav-link${pathname.startsWith('/resources') ? ' active' : ''}`}>Resources</Link>
           <Link href="mailto:hello@tern.app" className="nav-link">Contact</Link>
           <a href="#download" className="btn-cta-sm">
             Get Started
@@ -91,28 +94,30 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* Mobile overlay */}
-      {open && (
-        <div
-          className="fixed inset-0 z-40 flex flex-col items-start justify-center gap-8 md:hidden px-6"
-          style={{ backgroundColor: 'var(--teal)' }}
-        >
-          <button
-            className="absolute top-5 right-6 text-2xl"
-            style={{ color: 'rgba(238,247,248,0.7)', fontFamily: 'var(--font-manrope)' }}
-            onClick={() => setOpen(false)}
-          >
-            ✕
-          </button>
-          <Link href="/tenants" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 20, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Tenants</Link>
-          <Link href="/landlords" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 20, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Landlords</Link>
-          <Link href="/resources" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 20, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Resources</Link>
-          <Link href="mailto:hello@tern.app" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 20, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Contact</Link>
-          <a href="#download" className="btn-cta-sm" onClick={() => setOpen(false)}>
-            Get Started
-          </a>
-        </div>
-      )}
     </header>
+
+    {/* Mobile overlay — sibling to header so header's transform doesn't affect it */}
+    {open && (
+      <div
+        className="fixed inset-0 z-50 flex flex-col items-start justify-center gap-8 px-8 md:hidden"
+        style={{ backgroundColor: 'var(--teal)' }}
+      >
+        <button
+          className="absolute top-5 right-6 text-2xl"
+          style={{ color: 'rgba(238,247,248,0.7)', fontFamily: 'var(--font-manrope)' }}
+          onClick={() => setOpen(false)}
+        >
+          ✕
+        </button>
+        <Link href="/" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Tenants</Link>
+        <Link href="/landlords" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Landlords</Link>
+        <Link href="/resources" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Resources</Link>
+        <Link href="mailto:hello@tern.app" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Contact</Link>
+        <a href="#download" className="btn-cta-sm" onClick={() => setOpen(false)}>
+          Get Started
+        </a>
+      </div>
+    )}
+    </>
   );
 }

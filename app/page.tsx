@@ -1,5 +1,5 @@
 import HeroSection from '@/components/home/HeroSection';
-import TrustSection from '@/components/home/TrustSection';
+import SocialProofSection from '@/components/landlords/SocialProofSection';
 import ProvocationSection from '@/components/home/ProvocationSection';
 import RewardsCalculator from '@/components/home/RewardsCalculator';
 import ExperiencesSection from '@/components/home/ExperiencesSection';
@@ -11,12 +11,12 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <TrustSection />
+      <SocialProofSection centered />
       <ProvocationSection />
-      <HowItWorksSection />
       <ExperiencesSection />
       <RewardsCalculator />
       <ComparisonSection />
+      <HowItWorksSection />
       <FinalCtaSection />
     </>
   );

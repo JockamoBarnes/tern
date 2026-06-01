@@ -6,14 +6,14 @@ import Footer from '@/components/Footer';
 import ScrollRevealProvider from '@/components/ScrollRevealProvider';
 
 const unbounded = Unbounded({
-  weight: ['700'],
+  weight: ['700', '800'],
   subsets: ['latin'],
   variable: '--font-unbounded',
   display: 'swap',
 });
 
 const manrope = Manrope({
-  weight: ['400', '500', '600'],
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-manrope',
   display: 'swap',

@@ -25,8 +25,8 @@ export default function HowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="grad-divider"
-      style={{ background: 'var(--white)', padding: '120px 0' }}
+      className="section-light grad-divider"
+      style={{ padding: '120px 0' }}
     >
       <div
         className="px-6 md:px-12"
@@ -56,35 +56,52 @@ export default function HowItWorksSection() {
           {steps.map((step) => (
             <div
               key={step.num}
+              className={step.num === '04' ? 'card-payoff' : 'card-light'}
               style={{
-                background: step.num === '04' ? 'var(--teal)' : 'var(--white)',
-                border: step.num === '04' ? '1px solid rgba(21,234,173,0.2)' : '1px solid rgba(7,59,76,0.09)',
-                borderTop: '2px solid transparent',
-                backgroundImage: step.num === '04'
-                  ? 'linear-gradient(var(--teal), var(--teal)), linear-gradient(90deg, #15EAAD, #4DB6CE)'
-                  : 'linear-gradient(white, white), linear-gradient(90deg, #15EAAD, #4DB6CE)',
-                backgroundOrigin: 'border-box',
-                backgroundClip: 'padding-box, border-box',
-                borderRadius: 12,
                 padding: '36px 28px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 20,
-                boxShadow: step.num === '04' ? '0 2px 8px rgba(7,59,76,0.1), 0 12px 32px rgba(7,59,76,0.15)' : '0 2px 8px rgba(7,59,76,0.04), 0 12px 32px rgba(7,59,76,0.06)',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
+              {/* Ghost step number — decorative, behind content */}
+              <span
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  bottom: -8,
+                  right: 8,
+                  fontFamily: 'var(--font-unbounded)',
+                  fontWeight: 700,
+                  fontSize: 88,
+                  lineHeight: 1,
+                  color: 'rgba(21,234,173,0.06)',
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  zIndex: 0,
+                }}
+              >
+                {step.num}
+              </span>
+
+              {/* Step badge — Manrope (not Unbounded) */}
               <span
                 style={{
                   display: 'inline-block',
-                  fontFamily: 'var(--font-unbounded)',
-                  fontWeight: 700,
-                  fontSize: 13,
+                  fontFamily: 'var(--font-manrope)',
+                  fontWeight: 600,
+                  fontSize: 12,
                   color: 'var(--mint)',
                   background: 'rgba(21,234,173,0.12)',
                   border: '1px solid rgba(21,234,173,0.3)',
-                  borderRadius: 20,
+                  borderRadius: 6,
                   padding: '4px 12px',
                   alignSelf: 'flex-start',
+                  letterSpacing: '0.04em',
+                  position: 'relative',
+                  zIndex: 1,
                 }}
               >
                 {step.num}
@@ -94,10 +111,12 @@ export default function HowItWorksSection() {
                 style={{
                   fontFamily: 'var(--font-manrope)',
                   fontWeight: 600,
-                  fontSize: 16,
-                  color: step.num === '04' ? 'var(--near-white)' : 'var(--teal)',
+                  fontSize: 17,
+                  color: 'var(--teal)',
                   lineHeight: 1.3,
                   margin: 0,
+                  position: 'relative',
+                  zIndex: 1,
                 }}
               >
                 {step.title}
@@ -108,9 +127,11 @@ export default function HowItWorksSection() {
                   fontFamily: 'var(--font-manrope)',
                   fontWeight: 400,
                   fontSize: 14,
-                  color: step.num === '04' ? 'rgba(238,247,248,0.6)' : 'rgba(7,59,76,0.55)',
+                  color: 'rgba(7,59,76,0.55)',
                   lineHeight: 1.6,
                   margin: 0,
+                  position: 'relative',
+                  zIndex: 1,
                 }}
               >
                 {step.body}
@@ -119,7 +140,7 @@ export default function HowItWorksSection() {
           ))}
         </div>
 
-        {/* Caveat + resources link */}
+        {/* Resources link */}
         <p className="reveal" style={{ fontFamily: 'var(--font-manrope)', fontSize: 13, color: 'rgba(7,59,76,0.45)', marginTop: 32, transitionDelay: '240ms' }}>
           <a href="/resources" style={{ color: 'rgba(7,59,76,0.55)', textDecoration: 'underline', textUnderlineOffset: 3 }}>
             Still have questions? Visit our resources →

@@ -1,21 +1,20 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import type { Chart as ChartType } from 'chart.js';
+import { useState, useEffect, useRef } from 'react';
 
-const MONTH_NAMES = ['May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr'];
-const MONTH_YEARS = ["'26","'26","'26","'26","'26","'26","'26","'26","'27","'27","'27","'27"];
-const FREQ_INDICES: Record<number, number[]> = { 12:[0,1,2,3,4,5,6,7,8,9,10,11], 4:[0,3,6,9], 2:[0,6], 1:[0] };
-const FREQ_LABELS: Record<number, string> = { 12:'month', 4:'quarter', 2:'six months', 1:'year' };
+const FREQ_LABELS: Record<number, string> = { 12: 'month', 4: 'quarter', 2: 'six months', 1: 'year' };
 const TERN_RATE = 0.02;
+const MIN_RENT = 30000;
+const MAX_RENT = 600000;
 
 function fmt(n: number) { return Math.round(n).toLocaleString(); }
-function fmtAED(n: number) { return 'AED ' + Math.round(n).toLocaleString(); }
+function fmtAED(n: number) { return 'AED ' + Math.round(n).toLocaleString(); }
 
 type RewardType = 'cashback' | 'miles';
 
 interface Results {
   annualLabel: string;
+  annualTotal: number;
   perLabel: string;
   freqLabel: string;
   perPayment: number;
@@ -24,18 +23,14 @@ interface Results {
   ccRateFmt: string;
   unitLabel: string;
   ccRate: number;
-  ccBarData: number[];
-  ternBarData: number[];
   isCash: boolean;
 }
 
 function computeResults(rent: number, freq: number, type: RewardType, ccRate: number): Results {
   const perPayment = rent / freq;
-  const isMiles = type === 'miles';
-  const isCash = !isMiles;
-  const paymentIndices = FREQ_INDICES[freq];
+  const isCash = type === 'cashback';
 
-  let ccAnnual, ternAnnual, totalAnnual, ccPerPayment, ternPerPayment, totalPerPayment;
+  let ccAnnual, ternAnnual, ccPerPayment, ternPerPayment;
   if (isCash) {
     ccAnnual = rent * (ccRate / 100);
     ternAnnual = rent * TERN_RATE;
@@ -47,119 +42,104 @@ function computeResults(rent: number, freq: number, type: RewardType, ccRate: nu
     ccPerPayment = perPayment * ccRate;
     ternPerPayment = perPayment * (TERN_RATE * 100);
   }
-  totalAnnual = ccAnnual + ternAnnual;
-  totalPerPayment = ccPerPayment + ternPerPayment;
+  const totalAnnual = ccAnnual + ternAnnual;
+  const totalPerPayment = ccPerPayment + ternPerPayment;
 
   return {
-    annualLabel: isCash ? fmtAED(totalAnnual) : fmt(totalAnnual) + ' mi',
-    perLabel: isCash ? fmtAED(totalPerPayment) : fmt(totalPerPayment) + ' mi',
+    annualLabel: isCash ? fmtAED(totalAnnual) : fmt(totalAnnual) + ' mi',
+    annualTotal: totalAnnual,
+    perLabel: isCash ? fmtAED(totalPerPayment) : fmt(totalPerPayment) + ' mi',
     freqLabel: FREQ_LABELS[freq],
     perPayment,
     ccBreakLabel: isCash ? fmtAED(ccAnnual) : fmt(ccAnnual) + ' miles',
     ternBreakLabel: isCash ? fmtAED(ternAnnual) : fmt(ternAnnual) + ' miles',
-    ccRateFmt: ccRate + (isMiles ? ' mi/AED' : '%'),
+    ccRateFmt: ccRate + (type === 'miles' ? ' mi/AED' : '%'),
     unitLabel: isCash ? 'per year' : 'miles per year',
     ccRate,
-    ccBarData: MONTH_NAMES.map((_, i) => paymentIndices.includes(i) ? Math.round(ccPerPayment) : 0),
-    ternBarData: MONTH_NAMES.map((_, i) => paymentIndices.includes(i) ? Math.round(ternPerPayment) : 0),
     isCash,
   };
 }
 
-function ResultsPanel({ r }: { r: Results }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartRef = useRef<ChartType | null>(null);
+const SLIDER_CSS = `
+input[type="range"].tern-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(7,59,76,0.12);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"].tern-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #15EAAD;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(21,234,173,0.2);
+  transition: box-shadow 150ms ease;
+}
+input[type="range"].tern-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(21,234,173,0.3);
+}
+input[type="range"].tern-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #15EAAD;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 0 4px rgba(21,234,173,0.2);
+}
+`;
 
-  const buildChart = useCallback(async () => {
-    if (!canvasRef.current) return;
-    const { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } = await import('chart.js');
-    Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
+  const [displayTotal, setDisplayTotal] = useState(r.annualTotal);
+  const displayRef = useRef(r.annualTotal);
+  const animRef = useRef<number | null>(null);
 
-    if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; }
+  useEffect(() => {
+    const target = r.annualTotal;
+    const start = displayRef.current;
+    const duration = 400;
+    const startTime = performance.now();
 
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-    const tickColor = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)';
-    const chartUnit = r.isCash ? 'AED' : 'mi';
+    if (animRef.current) cancelAnimationFrame(animRef.current);
 
-    chartRef.current = new Chart(canvasRef.current, {
-      type: 'bar',
-      data: {
-        labels: MONTH_NAMES.map((m, i) => m + ' ' + MONTH_YEARS[i]),
-        datasets: [
-          ...(r.ccRate > 0 ? [{
-            label: 'Card rewards',
-            data: r.ccBarData,
-            backgroundColor: '#4DB6CE',
-            borderRadius: { topLeft: 0 as number, topRight: 0 as number, bottomLeft: 3 as number, bottomRight: 3 as number },
-            borderSkipped: 'bottom' as const,
-            barPercentage: 0.55,
-          }] : []),
-          {
-            label: 'Tern boost',
-            data: r.ternBarData,
-            backgroundColor: '#15EAAD',
-            borderRadius: { topLeft: 3 as number, topRight: 3 as number, bottomLeft: r.ccRate > 0 ? 0 as number : 3 as number, bottomRight: r.ccRate > 0 ? 0 as number : 3 as number },
-            borderSkipped: 'bottom' as const,
-            barPercentage: 0.55,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        animation: { duration: 180 },
-        plugins: {
-          legend: {
-            display: r.ccRate > 0,
-            position: 'bottom',
-            labels: { font: { family: 'Manrope', size: 10 }, color: tickColor, boxWidth: 8, boxHeight: 8, padding: 10 },
-          },
-          tooltip: {
-            filter: (item) => (item.raw as number) > 0,
-            callbacks: {
-              title: (items) => items[0].label,
-              label: (ctx) => {
-                const v = ctx.raw as number;
-                if (v === 0) return '';
-                return ' ' + ctx.dataset.label + ': ' + (chartUnit === 'AED' ? 'AED ' + v.toLocaleString() : v.toLocaleString() + ' mi');
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            stacked: true,
-            grid: { display: false },
-            border: { display: false },
-            ticks: { font: { family: 'Manrope', size: 9 }, color: tickColor, maxRotation: 0 },
-          },
-          y: {
-            stacked: true,
-            grid: { color: gridColor },
-            border: { display: false },
-            ticks: {
-              font: { family: 'Manrope', size: 9 },
-              color: tickColor,
-              callback: (v) => v === 0 ? '' : (chartUnit === 'AED' ? 'AED ' + v.toLocaleString() : v.toLocaleString()),
-            },
-          },
-        },
-      },
-    });
-  }, [r]);
+    function animate(now: number) {
+      const elapsed = now - startTime;
+      const p = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const current = start + (target - start) * eased;
+      displayRef.current = current;
+      setDisplayTotal(current);
+      if (p < 1) animRef.current = requestAnimationFrame(animate);
+    }
 
-  useEffect(() => { buildChart(); return () => { if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; } }; }, [buildChart]);
+    animRef.current = requestAnimationFrame(animate);
+    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
+  }, [r.annualTotal]);
+
+  const barWidth = `${((rent - MIN_RENT) / (MAX_RENT - MIN_RENT)) * 100}%`;
+  const displayLabel = r.isCash ? 'AED ' + fmt(displayTotal) : fmt(displayTotal) + ' mi';
 
   return (
     <div style={{ position: 'sticky', top: '1.5rem' }}>
-      {/* Primary result */}
-      <div style={{ background: 'var(--teal)', borderRadius: 12, padding: '1.25rem', marginBottom: 10 }}>
+      {/* Primary result — teal bg, large mint number */}
+      <div style={{
+        background: 'var(--teal)',
+        borderRadius: 12,
+        padding: '1.25rem',
+        marginBottom: 10,
+      }}>
         <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(208,251,239,0.5)', marginBottom: '0.5rem' }}>
           Total annual rewards
         </p>
-        <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 26, fontWeight: 700, color: 'var(--mint)', lineHeight: 1, marginBottom: 4 }}>
-          {r.annualLabel}
+        <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 'clamp(36px, 3vw, 52px)', fontWeight: 700, color: 'var(--mint)', lineHeight: 1, marginBottom: 4 }}>
+          {displayLabel}
         </p>
         <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(208,251,239,0.4)' }}>
           {r.unitLabel}
@@ -189,18 +169,30 @@ function ResultsPanel({ r }: { r: Results }) {
         )}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 1.25rem' }}>
           <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.55)', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ background: 'rgba(21,234,173,0.12)', color: '#0B8A62', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 20, letterSpacing: '0.04em' }}>Tern 2%</span>
+            <span style={{ background: 'rgba(21,234,173,0.12)', color: '#0B8A62', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 6, letterSpacing: '0.04em' }}>Tern 2%</span>
           </span>
           <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, fontWeight: 600, color: '#0B8A62' }}>{r.ternBreakLabel}</span>
         </div>
       </div>
 
-      {/* Chart */}
-      <div style={{ border: '0.5px solid rgba(7,59,76,0.1)', borderRadius: 12, padding: '1rem 1rem 0.5rem' }}>
-        <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(7,59,76,0.4)', marginBottom: '0.75rem' }}>
-          Rewards earned — next 12 months
+      {/* Horizontal bar — rewards scale with rent */}
+      <div style={{ border: '0.5px solid rgba(7,59,76,0.1)', borderRadius: 12, padding: '1rem 1.25rem' }}>
+        <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(7,59,76,0.4)', marginBottom: 10 }}>
+          Rewards scale with rent
         </p>
-        <canvas ref={canvasRef} height={120} />
+        <div style={{ background: 'rgba(7,59,76,0.08)', borderRadius: 8, height: 14, overflow: 'hidden' }}>
+          <div style={{
+            height: '100%',
+            width: barWidth,
+            background: 'linear-gradient(90deg, #15EAAD, #4DB6CE)',
+            borderRadius: 8,
+            transition: 'width 400ms ease',
+          }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+          <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.35)' }}>AED 30K</span>
+          <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.35)' }}>AED 600K</span>
+        </div>
       </div>
     </div>
   );
@@ -240,9 +232,9 @@ export default function RewardsCalculator() {
   };
 
   return (
-    <section className="grad-divider" style={{ background: 'var(--grad-light)', padding: '96px 0', position: 'relative', overflow: 'hidden' }}>
-      <div aria-hidden="true" style={{ position: 'absolute', top: '-80px', right: '-40px', width: 520, height: 520, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.06) 0%, transparent 70%)', filter: 'blur(70px)', pointerEvents: 'none' }} />
-      <div aria-hidden="true" style={{ position: 'absolute', bottom: '-60px', left: '8%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.05) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+    <section className="section-light grad-divider" style={{ padding: '96px 0' }}>
+      <style dangerouslySetInnerHTML={{ __html: SLIDER_CSS }} />
+
       <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
 
         <h2
@@ -267,7 +259,7 @@ export default function RewardsCalculator() {
           Most Dubai renters leave <strong style={{ color: 'var(--teal)', fontWeight: 600 }}>AED 3,000+</strong> on the table every year.
         </p>
 
-        {/* Two-column layout inside a card */}
+        {/* Calculator card */}
         <div
           className="reveal"
           style={{
@@ -280,74 +272,41 @@ export default function RewardsCalculator() {
             backgroundImage: 'linear-gradient(white, white), linear-gradient(90deg, #15EAAD, #4DB6CE)',
             backgroundOrigin: 'border-box',
             backgroundClip: 'padding-box, border-box',
+            transitionDelay: '120ms',
           }}
         >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
-            alignItems: 'start',
-          }}
-        >
-          {/* Left — inputs */}
-          <div>
-            {/* Rent slider */}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={labelStyle}>Annual rent</label>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
-                <span style={{ fontFamily: 'var(--font-unbounded)', fontSize: 20, fontWeight: 700, color: 'var(--teal)' }}>
-                  AED&nbsp;{rent.toLocaleString()}
-                </span>
-              </div>
-              <input
-                type="range"
-                min={30000}
-                max={600000}
-                step={1000}
-                value={rent}
-                onChange={(e) => setRent(parseInt(e.target.value))}
-                style={{ width: '100%', height: 4, accentColor: 'var(--mint)', cursor: 'pointer' }}
-              />
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.4)' }}>AED 30,000</span>
-                <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.4)' }}>AED 600,000</span>
-              </div>
-            </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'start' }}>
 
-            {/* Payment frequency */}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={labelStyle}>Payment frequency</label>
-              <div style={{ position: 'relative' }}>
-                <select
-                  value={freq}
-                  onChange={(e) => setFreq(parseInt(e.target.value))}
-                  style={{
-                    ...inputStyle,
-                    appearance: 'none',
-                    cursor: 'pointer',
-                    padding: '0 28px 0 10px',
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23073B4C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'right 10px center',
-                  }}
-                >
-                  <option value={12}>Monthly (12/year)</option>
-                  <option value={4}>Quarterly (4/year)</option>
-                  <option value={2}>Semi-annually (2/year)</option>
-                  <option value={1}>Annually (1/year)</option>
-                </select>
+            {/* Left — inputs */}
+            <div>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={labelStyle}>Annual rent</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
+                  <span style={{ fontFamily: 'var(--font-unbounded)', fontSize: 22, fontWeight: 700, color: 'var(--teal)' }}>
+                    AED&nbsp;{rent.toLocaleString()}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  className="tern-slider"
+                  min={MIN_RENT}
+                  max={MAX_RENT}
+                  step={1000}
+                  value={rent}
+                  onChange={(e) => setRent(parseInt(e.target.value))}
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+                  <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.4)' }}>AED 30,000</span>
+                  <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.4)' }}>AED 600,000</span>
+                </div>
               </div>
-            </div>
 
-            {/* Reward type + card rate */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               <div style={{ marginBottom: '1.25rem' }}>
-                <label style={labelStyle}>Reward type</label>
+                <label style={labelStyle}>Payment frequency</label>
                 <div style={{ position: 'relative' }}>
                   <select
-                    value={rewardType}
-                    onChange={(e) => setRewardType(e.target.value as RewardType)}
+                    value={freq}
+                    onChange={(e) => setFreq(parseInt(e.target.value))}
                     style={{
                       ...inputStyle,
                       appearance: 'none',
@@ -358,39 +317,64 @@ export default function RewardsCalculator() {
                       backgroundPosition: 'right 10px center',
                     }}
                   >
-                    <option value="cashback">Cashback</option>
-                    <option value="miles">Miles / Points</option>
+                    <option value={12}>Monthly (12/year)</option>
+                    <option value={4}>Quarterly (4/year)</option>
+                    <option value={2}>Semi-annually (2/year)</option>
+                    <option value={1}>Annually (1/year)</option>
                   </select>
                 </div>
               </div>
 
-              <div style={{ marginBottom: '1.25rem' }}>
-                <label style={labelStyle}>Your card rate</label>
-                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                  <input
-                    type="number"
-                    value={ccRate}
-                    min={0}
-                    max={30}
-                    step={0.1}
-                    onChange={(e) => setCcRate(parseFloat(e.target.value) || 0)}
-                    style={{ ...inputStyle, padding: '0 36px 0 10px' }}
-                  />
-                  <span style={{ position: 'absolute', right: 10, fontSize: 13, fontWeight: 500, color: 'rgba(7,59,76,0.45)', pointerEvents: 'none', fontFamily: 'var(--font-manrope)' }}>
-                    {rewardType === 'miles' ? 'mi/AED' : '%'}
-                  </span>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <label style={labelStyle}>Reward type</label>
+                  <div style={{ position: 'relative' }}>
+                    <select
+                      value={rewardType}
+                      onChange={(e) => setRewardType(e.target.value as RewardType)}
+                      style={{
+                        ...inputStyle,
+                        appearance: 'none',
+                        cursor: 'pointer',
+                        padding: '0 28px 0 10px',
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23073B4C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'right 10px center',
+                      }}
+                    >
+                      <option value="cashback">Cashback</option>
+                      <option value="miles">Miles / Points</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <label style={labelStyle}>Your card rate</label>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <input
+                      type="number"
+                      value={ccRate}
+                      min={0}
+                      max={30}
+                      step={0.1}
+                      onChange={(e) => setCcRate(parseFloat(e.target.value) || 0)}
+                      style={{ ...inputStyle, padding: '0 36px 0 10px' }}
+                    />
+                    <span style={{ position: 'absolute', right: 10, fontSize: 13, fontWeight: 500, color: 'rgba(7,59,76,0.45)', pointerEvents: 'none', fontFamily: 'var(--font-manrope)' }}>
+                      {rewardType === 'miles' ? 'mi/AED' : '%'}
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.4)', marginTop: 8 }}>
+                No fee to you. No change for your landlord.
+              </p>
             </div>
 
-            <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.4)', marginTop: 8 }}>
-              No fee to you. No change for your landlord.
-            </p>
+            {/* Right — results */}
+            <ResultsPanel r={results} rent={rent} />
           </div>
-
-          {/* Right — results */}
-          <ResultsPanel r={results} />
-        </div>
         </div>
       </div>
     </section>

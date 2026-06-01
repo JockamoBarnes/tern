@@ -1,23 +1,36 @@
-const CSS = `
-@keyframes breathe {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.08); opacity: 0.85; }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-.orb-breathe { animation: breathe 8s ease-in-out infinite; }
-.stat-float  { animation: float  5s ease-in-out infinite; }
-`;
+'use client';
+
+import { useState, useEffect } from 'react';
+
+const CYCLING_WORDS = [
+  'freeloading',
+  'doing nothing',
+  'wasted',
+  'left behind',
+];
 
 export default function HeroSection() {
+  const [wordIdx, setWordIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Fade out
+      setVisible(false);
+      setTimeout(() => {
+        // Swap word then fade back in
+        setWordIdx(i => (i + 1) % CYCLING_WORDS.length);
+        setVisible(true);
+      }, 280);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <>
-    <style dangerouslySetInnerHTML={{ __html: CSS }} />
     <section
       style={{
-        minHeight: '100vh',
+        height: '92vh',
+        minHeight: 600,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -27,92 +40,66 @@ export default function HeroSection() {
         backgroundColor: 'var(--teal)',
       }}
     >
-      {/* Full-bleed background photo */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/img/hero-bgimage.png"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          objectPosition: 'center',
-          opacity: 0.38,
-          mixBlendMode: 'luminosity',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Teal gradient overlay — keeps brand color dominant */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'linear-gradient(135deg, rgba(7,59,76,0.72) 0%, rgba(7,59,76,0.45) 50%, rgba(7,59,76,0.65) 100%)',
-        pointerEvents: 'none',
-      }} />
-
-      {/* Ambient glow orbs */}
-      <div className="orb-breathe" style={{ position: 'absolute', top: '-80px', right: '-60px', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.12) 0%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: '-120px', right: '10%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.08) 0%, transparent 70%)', filter: 'blur(120px)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', top: '40%', left: '-100px', width: 350, height: 350, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.07) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
-
-      {/* Phone mockup — desktop only */}
-      <div
-        className="stat-float hidden md:block"
-        style={{
-          position: 'absolute',
-          right: '6%',
-          bottom: 0,
-          height: '75%',
-          maxHeight: 675,
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          filter: 'drop-shadow(0 32px 64px rgba(0,0,0,0.45))',
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/img/hero-phone.webp"
-          alt="Tern app"
-          style={{ height: '120%', width: 'auto', display: 'block', objectPosition: 'top' }}
-        />
-      </div>
+      {/* Subtle mesh — warmth without motion competing with the headline */}
+      <div className="blob-1" style={{ position: 'absolute', top: '-10%', right: '-5%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.18) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none' }} />
+      <div className="blob-2" style={{ position: 'absolute', bottom: '-15%', left: '15%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.12) 0%, transparent 65%)', filter: 'blur(110px)', pointerEvents: 'none' }} />
+      <div className="blob-3" style={{ position: 'absolute', top: '20%', left: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.08) 0%, transparent 65%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
 
       <div
         className="px-6 md:px-12"
         style={{
-          maxWidth: 1200,
+          maxWidth: 900,
           margin: '0 auto',
           width: '100%',
-          paddingBottom: 96,
-          paddingTop: 48,
+          paddingBottom: 48,
+          paddingTop: 24,
           position: 'relative',
           zIndex: 1,
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        {/* Headline */}
+        {/* Kinetic headline */}
         <h1
           className="reveal"
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(36px, 4.5vw, 60px)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
-            background: 'var(--grad-head)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            maxWidth: '68%',
-            minWidth: 280,
-            marginBottom: 28,
+            fontSize: 'clamp(40px, 6vw, 80px)',
+            lineHeight: 1.08,
+            letterSpacing: '-0.03em',
+            color: 'rgba(240,250,250,0.95)',
+            marginBottom: 36,
             transitionDelay: '0ms',
           }}
         >
-          Your rent&rsquo;s been<br />freeloading<br />for too long.
+          Your rent&rsquo;s been
+          {/* Fixed-height cycling line — never shifts layout */}
+          <span style={{
+            display: 'block',
+            height: '1.12em',
+            overflow: 'hidden',
+            position: 'relative',
+          }}>
+            <span
+              style={{
+                display: 'block',
+                whiteSpace: 'nowrap',
+                background: 'var(--grad-head)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(10px)',
+                transition: 'opacity 280ms ease, transform 280ms ease',
+              }}
+            >
+              {CYCLING_WORDS[wordIdx]}
+            </span>
+          </span>
+          for too long.
         </h1>
 
         {/* Anchor sentence */}
@@ -123,9 +110,9 @@ export default function HeroSection() {
             fontWeight: 400,
             fontSize: 18,
             lineHeight: 1.65,
-            color: 'rgba(238,247,248,0.65)',
+            color: 'rgba(240,250,250,0.92)',
             maxWidth: 480,
-            marginBottom: 40,
+            marginBottom: 48,
             transitionDelay: '80ms',
           }}
         >
@@ -133,13 +120,10 @@ export default function HeroSection() {
         </p>
 
         {/* CTA */}
-        <div className="reveal" style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 20, transitionDelay: '160ms', flexWrap: 'wrap' }}>
+        <div className="reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 28, transitionDelay: '160ms' }}>
           <a href="#download" className="btn-cta">
             Pay Rent with Your Card
           </a>
-          <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 500, fontSize: 13, color: 'rgba(238,247,248,0.55)', margin: 0 }}>
-            Join over 1,500 UAE renters already using Tern
-          </p>
         </div>
 
         {/* Trust cluster */}
@@ -148,15 +132,14 @@ export default function HeroSection() {
           style={{
             fontFamily: 'var(--font-manrope)',
             fontWeight: 500,
-            fontSize: 11,
-            color: 'rgba(238,247,248,0.35)',
+            fontSize: 12,
+            color: 'rgba(240,250,250,0.4)',
             transitionDelay: '240ms',
           }}
         >
-          Regulated by CBUAE&nbsp;&nbsp;·&nbsp;&nbsp;DLD Registered&nbsp;&nbsp;·&nbsp;&nbsp;No fees to tenants&nbsp;&nbsp;·&nbsp;&nbsp;Start at any point in your lease
+          Start at any point in your lease&nbsp;&nbsp;·&nbsp;&nbsp;No fees for you&nbsp;&nbsp;·&nbsp;&nbsp;Works with any UAE credit card
         </p>
       </div>
     </section>
-    </>
   );
 }
