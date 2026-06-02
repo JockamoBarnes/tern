@@ -1,6 +1,11 @@
 export default function LandlordFinalCtaSection() {
   return (
-    <section className="section-navy" style={{ padding: '120px 0', overflow: 'hidden' }}>
+    <section className="section-navy" style={{ overflow: 'hidden', padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
+      {/* Ambient blobs */}
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.45) 0%, transparent 60%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 3 }} />
+      <div style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translate(-50%, -50%)', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.45) 0%, transparent 65%)', filter: 'blur(70px)', pointerEvents: 'none', zIndex: 3 }} />
+      <div style={{ position: 'absolute', top: '50%', left: '75%', transform: 'translate(-50%, -50%)', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.4) 0%, transparent 65%)', filter: 'blur(70px)', pointerEvents: 'none', zIndex: 3 }} />
+
       {/* Tern wordmark watermark */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -12,8 +17,8 @@ export default function LandlordFinalCtaSection() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '60%',
-          maxWidth: 500,
+          width: '70%',
+          maxWidth: 600,
           opacity: 0.07,
           pointerEvents: 'none',
           filter: 'brightness(10)',
@@ -21,14 +26,14 @@ export default function LandlordFinalCtaSection() {
         }}
       />
 
-      <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+      <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 4 }}>
 
         <h2
           className="reveal"
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(26px, 3.5vw, 48px)',
+            fontSize: 'clamp(30px, 4vw, 56px)',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: 'var(--near-white)',

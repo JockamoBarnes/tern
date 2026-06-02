@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { Unbounded, Manrope } from 'next/font/google';
+import { Geom, Manrope } from 'next/font/google';
 import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import ScrollRevealProvider from '@/components/ScrollRevealProvider';
 
-const unbounded = Unbounded({
+const unbounded = Geom({
   weight: ['700', '800'],
   subsets: ['latin'],
   variable: '--font-unbounded',

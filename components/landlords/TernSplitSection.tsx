@@ -29,7 +29,7 @@ export default function TernSplitSection() {
             <span style={{ display: 'inline-block', fontFamily: 'var(--font-manrope)', fontWeight: 700, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: 'var(--teal)', background: 'rgba(21,234,173,0.18)', border: '1px solid rgba(21,234,173,0.4)', borderRadius: 6, padding: '5px 14px', marginBottom: 32 }}>
               Tern Split
             </span>
-            <h3 style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(22px, 2.5vw, 34px)', lineHeight: 1.15, color: 'var(--teal)', marginBottom: 20 }}>
+            <h3 style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(26px, 3vw, 40px)', lineHeight: 1.15, color: 'var(--teal)', marginBottom: 20 }}>
               Earn income when tenants need flexibility
             </h3>
             <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 16, lineHeight: 1.7, color: 'rgba(7,59,76,0.6)', marginBottom: 24 }}>
@@ -70,7 +70,7 @@ export default function TernSplitSection() {
                 <span style={{
                   fontFamily: 'var(--font-unbounded)',
                   fontWeight: 700,
-                  fontSize: 'clamp(28px, 3vw, 40px)',
+                  fontSize: 'clamp(32px, 3.5vw, 46px)',
                   letterSpacing: '-0.02em',
                   lineHeight: 1,
                   background: m.highlight ? 'linear-gradient(120deg, #15EAAD 20%, #4DB6CE 80%)' : undefined,

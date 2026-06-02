@@ -30,15 +30,15 @@ const cases = [
 
 export default function CaseStudiesSection() {
   return (
-    <section className="section-light" style={{ padding: '96px 0' }}>
+    <section className="section-light" style={{ padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
       <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
 
         {/* Header */}
-        <div className="reveal" style={{ marginBottom: 40 }}>
-          <h2 style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(22px, 2.6vw, 36px)', lineHeight: 1.1, letterSpacing: '-0.01em', color: 'var(--teal)', margin: '0 0 14px' }}>
-            Real results, real portfolios
+        <div className="reveal" style={{ marginBottom: 48 }}>
+          <h2 style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(32px, 4vw, 56px)', lineHeight: 1.1, letterSpacing: '-0.01em', color: 'var(--teal)', margin: '0 0 14px' }}>
+            Here&rsquo;s why landlords love us
           </h2>
-          <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 16, color: 'rgba(7,59,76,0.5)', margin: 0, maxWidth: 620, lineHeight: 1.65 }}>
+          <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 16, color: 'rgba(7,59,76,0.5)', margin: 0, maxWidth: 420, lineHeight: 1.65 }}>
             From owner-operators with a few units to portfolios of thousands, Tern works across every portfolio type.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function CaseStudiesSection() {
                 }}>
                   {c.label}
                 </span>
-                <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 12, color: 'rgba(7,59,76,0.35)', whiteSpace: 'nowrap' as const }}>
+                <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 12, color: 'rgba(7,59,76,0.35)', textAlign: 'right' as const }}>
                   {c.subtitle}
                 </span>
               </div>
@@ -101,7 +101,7 @@ export default function CaseStudiesSection() {
               <span style={{
                 fontFamily: 'var(--font-unbounded)',
                 fontWeight: 700,
-                fontSize: 'clamp(38px, 4vw, 52px)',
+                fontSize: 'clamp(44px, 4.6vw, 60px)',
                 lineHeight: 1,
                 letterSpacing: '-0.035em',
                 background: 'linear-gradient(120deg, #15EAAD 20%, #4DB6CE 80%)',

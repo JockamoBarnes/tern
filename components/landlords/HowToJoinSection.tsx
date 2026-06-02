@@ -7,15 +7,15 @@ const steps = [
 
 export default function HowToJoinSection() {
   return (
-    <section style={{ background: 'transparent', padding: '100px 0', position: 'relative' }}>
+    <section style={{ background: 'transparent', position: 'relative', padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
       <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
 
         {/* Header */}
         <div className="reveal grid grid-cols-1 md:grid-cols-2 items-end" style={{ marginBottom: 40 }}>
-          <h2 style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(24px, 2.8vw, 40px)', lineHeight: 1.1, letterSpacing: '-0.01em', color: 'var(--teal)', margin: 0 }}>
+          <h2 style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(32px, 4vw, 56px)', lineHeight: 1.1, letterSpacing: '-0.01em', color: 'var(--teal)', margin: 0 }}>
             How to get started
           </h2>
-          <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 15, color: 'rgba(7,59,76,0.5)', margin: 0, textAlign: 'right' as const }}>
+          <p style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 15, color: 'rgba(7,59,76,0.5)', margin: 0, textAlign: 'left' as const }} className="md:text-right">
             Up and running in 1–2 days. Most of the work is on us.
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function HowToJoinSection() {
                 <span style={{
                   fontFamily: 'var(--font-unbounded)',
                   fontWeight: 700,
-                  fontSize: 10,
+                  fontSize: 12,
                   color: i === 0 ? '#15EAAD' : 'var(--teal)',
                 }}>
                   {step.num}
@@ -89,6 +89,7 @@ export default function HowToJoinSection() {
                 margin: 0,
                 position: 'relative',
                 zIndex: 1,
+                textWrap: 'balance' as React.CSSProperties['textWrap'],
               }}>
                 {step.body}
               </p>

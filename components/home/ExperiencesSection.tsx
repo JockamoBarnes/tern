@@ -4,11 +4,11 @@ import { useState } from 'react';
 
 const categories = [
   {
-    label: 'Go Somewhere New',
-    headline: 'Rent paid.\nBags packed.',
-    sub: 'Earn miles and free nights on your next trip.',
-    brands: ['Emirates', 'Etihad', 'Marriott Bonvoy', 'Hilton Honors', 'Deliveroo', 'Talabat'],
-    photo: '/img/img-rev-travel.png',
+    label: 'For You',
+    headline: 'Rent paid.\nNight sorted.',
+    sub: 'Earn rewards at the restaurants, cinemas, and streaming services you already use.',
+    brands: ['Netflix', 'Reel Cinemas', 'Palazzo Versace', 'Anghami'],
+    photo: '/img/img-rev-entertainment.webp',
     reward: '4,200',
     rewardUnit: 'miles',
     rewardLabel: 'Est. on AED 120K annual rent',
@@ -17,11 +17,11 @@ const categories = [
     routeTo: 'London',
   },
   {
-    label: 'Get Something Nice',
-    headline: 'Rewards that\nfill your home.',
-    sub: 'Earn rewards at the places you shop most.',
-    brands: ['Sephora', 'Harvey Nichols', 'Namshi', 'Spinneys', 'Carrefour', 'LuLu'],
-    photo: '/img/img-rev-shopping.png',
+    label: 'For Your Home',
+    headline: 'Every corner,\nworking harder.',
+    sub: 'Earn rewards at the home and furniture stores you shop most.',
+    brands: ['Ikea', 'SharafDG', 'Amazon', 'LaundryHeap'],
+    photo: '/img/img-rev-shopping.webp',
     reward: 'AED 2,400',
     rewardUnit: 'cashback',
     rewardLabel: 'Est. on AED 120K annual rent',
@@ -30,11 +30,11 @@ const categories = [
     routeTo: 'Your pocket',
   },
   {
-    label: 'Give Them More',
-    headline: 'The fees that\nfund their future.',
+    label: 'For Your Family',
+    headline: 'The rent that\nfund their future.',
     sub: 'Earn something for the ones you\'re working this hard for.',
-    brands: ['Prypco', 'Secure My Scholarship'],
-    photo: '/img/img-rev-future.png',
+    brands: ['PRYPCO Blocks', 'Secure My Scholarship', 'School Fees', 'Rent'],
+    photo: '/img/img-rev-future.webp',
     reward: 'Every dirham',
     rewardUnit: 'working harder',
     rewardLabel: 'Est. on AED 120K annual rent',
@@ -75,11 +75,11 @@ export default function ExperiencesSection() {
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(7,59,76,0.1) 0%, rgba(7,59,76,0.05) 35%, rgba(7,59,76,0.55) 75%, rgba(7,59,76,0.9) 100%)', pointerEvents: 'none' }} />
 
       {/* Content */}
-      <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', position: 'relative', zIndex: 1, paddingBottom: 56, paddingTop: 120 }}>
+      <div className="px-6 md:px-12 pt-20 md:pt-24 pb-14 md:pb-16" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 48, alignItems: 'end' }}>
 
           {/* Headline + brands */}
-          <div style={{ maxWidth: 680, position: 'relative', minHeight: 280 }}>
+          <div style={{ maxWidth: 680, position: 'relative', minHeight: 'clamp(240px, 30vw, 280px)' }}>
             {categories.map((cat, i) => (
               <div
                 key={cat.label}
@@ -95,7 +95,7 @@ export default function ExperiencesSection() {
                 <h2 style={{
                   fontFamily: 'var(--font-unbounded)',
                   fontWeight: 700,
-                  fontSize: 'clamp(32px, 4.5vw, 64px)',
+                  fontSize: 'clamp(42px, 5.5vw, 72px)',
                   lineHeight: 1.1,
                   letterSpacing: '-0.02em',
                   color: 'var(--near-white)',
@@ -123,53 +123,6 @@ export default function ExperiencesSection() {
             ))}
           </div>
 
-          {/* Boarding pass reward card */}
-          <div style={{ position: 'absolute', right: '8%', bottom: 220, pointerEvents: 'none' }} className="hidden md:block">
-            {categories.map((cat, i) => (
-              <div
-                key={cat.label}
-                className="glass-card-teal"
-                style={{
-                  opacity: i === active ? 1 : 0,
-                  transform: i === active ? 'translateY(0)' : 'translateY(8px)',
-                  transition: 'opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s',
-                  position: i === 0 ? 'relative' : 'absolute',
-                  top: i !== 0 ? 0 : undefined,
-                  right: i !== 0 ? 0 : undefined,
-                  minWidth: 260,
-                  padding: '20px 24px',
-                }}
-              >
-                {/* Top half — route info */}
-                <div style={{ marginBottom: 14 }}>
-                  <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(21,234,173,0.55)', marginBottom: 8, margin: '0 0 8px' }}>
-                    Tern Rewards
-                  </p>
-                  <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(240,250,250,0.55)', margin: '0 0 10px', letterSpacing: '0.04em' }}>
-                    {cat.route}
-                  </p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 10, color: 'rgba(240,250,250,0.4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{cat.routeFrom}</span>
-                    <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(21,234,173,0.5)' }}>✦</span>
-                    <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 10, color: 'rgba(240,250,250,0.4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{cat.routeTo}</span>
-                  </div>
-                </div>
-
-                {/* Perforated divider */}
-                <div style={{ borderTop: '1px dashed rgba(21,234,173,0.3)', marginBottom: 14 }} />
-
-                {/* Bottom half — reward amount */}
-                <div>
-                  <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 28, fontWeight: 700, color: 'var(--mint)', lineHeight: 1, margin: '0 0 6px' }}>
-                    {cat.reward}
-                  </p>
-                  <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(240,250,250,0.5)', margin: 0 }}>
-                    {cat.rewardLabel}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Category tabs */}

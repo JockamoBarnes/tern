@@ -76,7 +76,7 @@ export default function Nav() {
           <Link href="/" className={`nav-link${pathname === '/' ? ' active' : ''}`}>Tenants</Link>
           <Link href="/landlords" className={`nav-link${pathname.startsWith('/landlords') ? ' active' : ''}`}>Landlords</Link>
           <Link href="/resources" className={`nav-link${pathname.startsWith('/resources') ? ' active' : ''}`}>Resources</Link>
-          <Link href="mailto:hello@tern.app" className="nav-link">Contact</Link>
+          <Link href="mailto:hello@ternrewards.com" className="nav-link">Contact</Link>
           <a href="#download" className="btn-cta-sm">
             Get Started
           </a>
@@ -107,12 +107,12 @@ export default function Nav() {
           style={{ color: 'rgba(238,247,248,0.7)', fontFamily: 'var(--font-manrope)' }}
           onClick={() => setOpen(false)}
         >
-          ✕
+          {'✕'}
         </button>
         <Link href="/" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Tenants</Link>
         <Link href="/landlords" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Landlords</Link>
         <Link href="/resources" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Resources</Link>
-        <Link href="mailto:hello@tern.app" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Contact</Link>
+        <Link href="mailto:hello@ternrewards.com" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 600, fontSize: 22, color: 'var(--near-white)', textDecoration: 'none' }} onClick={() => setOpen(false)}>Contact</Link>
         <a href="#download" className="btn-cta-sm" onClick={() => setOpen(false)}>
           Get Started
         </a>

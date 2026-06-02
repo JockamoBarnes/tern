@@ -13,14 +13,41 @@ type Row = {
   tern?: boolean;
 };
 
+const MOTION_CSS = `
+@keyframes tern-shimmer {
+  0%, 60% { transform: translateX(-150%); opacity: 0; }
+  65%      { opacity: 1; }
+  95%      { opacity: 1; }
+  100%     { transform: translateX(350%); opacity: 0; }
+}
+.tern-cell {
+  position: relative;
+  overflow: hidden;
+}
+.tern-shimmer-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: tern-shimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.check-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 13px; font-weight: 700;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.comparison-row:hover .check-icon {
+  transform: scale(1.25);
+}
+`;
+
 function Check({ on }: { on: boolean }) {
   return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: 22, height: 22, borderRadius: '50%',
+    <span className="check-icon" style={{
       background: on ? 'rgba(21,234,173,0.12)' : 'rgba(220,38,38,0.08)',
       color: on ? '#0B8A62' : 'rgba(220,38,38,0.7)',
-      fontSize: 13, fontWeight: 700,
     }}>
       {on ? '✓' : '✗'}
     </span>
@@ -31,7 +58,8 @@ export default function ComparisonSection() {
   const lastRowIdx = rows.length - 1;
 
   return (
-    <section className="section-light grad-divider" style={{ padding: '96px 0' }}>
+    <section className="section-light grad-divider" style={{ padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
+      <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
       <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
 
         <h2
@@ -39,13 +67,12 @@ export default function ComparisonSection() {
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(28px, 3.5vw, 48px)',
+            fontSize: 'clamp(32px, 4vw, 56px)',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: 'var(--teal)',
             marginBottom: 16,
-            maxWidth: '65%',
-            minWidth: 260,
+            maxWidth: 580,
           }}
         >
           There&rsquo;s no comparison
@@ -55,8 +82,8 @@ export default function ComparisonSection() {
         </p>
 
         {/* Table */}
-        <div className="reveal" style={{ transitionDelay: '160ms', overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 560 }}>
+        <div className="reveal overflow-x-auto" style={{ transitionDelay: '160ms', WebkitOverflowScrolling: 'touch' as 'touch' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
             <thead>
               <tr>
                 <th style={{ width: '40%', padding: '0 0 20px', textAlign: 'left' }} />
@@ -97,6 +124,7 @@ export default function ComparisonSection() {
               {rows.map((row, i) => (
                 <tr
                   key={row.label}
+                  className="comparison-row"
                   style={{ borderTop: '1px solid rgba(7,59,76,0.07)' }}
                 >
                   <td style={{ padding: '16px 16px 16px 0', fontFamily: 'var(--font-manrope)', fontSize: 14, fontWeight: 500, color: 'rgba(7,59,76,0.7)', lineHeight: 1.4 }}>
@@ -108,7 +136,7 @@ export default function ComparisonSection() {
                   <td style={{ padding: '16px 0', textAlign: 'center' }}>
                     <Check on={!!row.bank} />
                   </td>
-                  <td style={{
+                  <td className="tern-cell" style={{
                     padding: '16px 24px',
                     textAlign: 'center',
                     background: 'rgba(21,234,173,0.05)',
@@ -117,6 +145,7 @@ export default function ComparisonSection() {
                     ...(i === 0 ? { borderTop: '2px solid var(--mint)' } : {}),
                     ...(i === lastRowIdx ? { borderBottom: '2px solid var(--mint)', borderRadius: '0 0 8px 8px' } : {}),
                   }}>
+                    <div className="tern-shimmer-bar" />
                     <Check on={!!row.tern} />
                   </td>
                 </tr>

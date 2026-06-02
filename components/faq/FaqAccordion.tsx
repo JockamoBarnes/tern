@@ -164,8 +164,8 @@ export default function FaqAccordion() {
         <div key={section.heading} className="mb-14">
           <h2
             id={slug(section.heading)}
-            className="text-xs font-semibold uppercase mb-6"
-            style={{ color: 'var(--mint)', letterSpacing: '0.12em' }}
+            className="font-semibold uppercase mb-6"
+            style={{ color: '#0B8A62', letterSpacing: '0.1em', fontSize: 13 }}
           >
             {section.heading}
           </h2>

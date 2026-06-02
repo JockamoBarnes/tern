@@ -123,11 +123,10 @@ function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
     return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
   }, [r.annualTotal]);
 
-  const barWidth = `${((rent - MIN_RENT) / (MAX_RENT - MIN_RENT)) * 100}%`;
   const displayLabel = r.isCash ? 'AED ' + fmt(displayTotal) : fmt(displayTotal) + ' mi';
 
   return (
-    <div style={{ position: 'sticky', top: '1.5rem' }}>
+    <div className="md:sticky md:top-6">
       {/* Primary result — teal bg, large mint number */}
       <div style={{
         background: 'var(--teal)',
@@ -138,7 +137,7 @@ function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
         <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(208,251,239,0.5)', marginBottom: '0.5rem' }}>
           Total annual rewards
         </p>
-        <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 'clamp(36px, 3vw, 52px)', fontWeight: 700, color: 'var(--mint)', lineHeight: 1, marginBottom: 4 }}>
+        <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 'clamp(42px, 3.5vw, 60px)', fontWeight: 700, color: 'var(--mint)', lineHeight: 1, marginBottom: 4 }}>
           {displayLabel}
         </p>
         <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(208,251,239,0.4)' }}>
@@ -149,9 +148,9 @@ function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
       {/* Per payment */}
       <div style={{ background: 'rgba(7,59,76,0.04)', border: '0.5px solid rgba(7,59,76,0.1)', borderRadius: 12, padding: '1rem 1.25rem', marginBottom: 10 }}>
         <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(7,59,76,0.4)', marginBottom: '0.4rem' }}>
-          Per payment
+          Rewards Per Payment
         </p>
-        <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 18, fontWeight: 700, color: 'var(--teal)', lineHeight: 1, marginBottom: 3 }}>
+        <p style={{ fontFamily: 'var(--font-unbounded)', fontSize: 21, fontWeight: 700, color: 'var(--teal)', lineHeight: 1, marginBottom: 3 }}>
           {r.perLabel}
         </p>
         <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(7,59,76,0.45)' }}>
@@ -167,33 +166,54 @@ function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
             <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, fontWeight: 600, color: 'var(--teal)' }}>{r.ccBreakLabel}</span>
           </div>
         )}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 1.25rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 1.25rem', borderBottom: '0.5px solid rgba(7,59,76,0.08)' }}>
           <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.55)', display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ background: 'rgba(21,234,173,0.12)', color: '#0B8A62', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 6, letterSpacing: '0.04em' }}>Tern 2%</span>
           </span>
           <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, fontWeight: 600, color: '#0B8A62' }}>{r.ternBreakLabel}</span>
         </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 1.25rem' }}>
+          <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.55)' }}>Your fee</span>
+          <span style={{ fontFamily: 'var(--font-unbounded)', fontSize: 13, fontWeight: 700, color: 'var(--mint)' }}>AED 0</span>
+        </div>
       </div>
 
-      {/* Horizontal bar — rewards scale with rent */}
-      <div style={{ border: '0.5px solid rgba(7,59,76,0.1)', borderRadius: 12, padding: '1rem 1.25rem' }}>
-        <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(7,59,76,0.4)', marginBottom: 10 }}>
-          Rewards scale with rent
-        </p>
-        <div style={{ background: 'rgba(7,59,76,0.08)', borderRadius: 8, height: 14, overflow: 'hidden' }}>
-          <div style={{
-            height: '100%',
-            width: barWidth,
-            background: 'linear-gradient(90deg, #15EAAD, #4DB6CE)',
-            borderRadius: 8,
-            transition: 'width 400ms ease',
-          }} />
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
-          <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.35)' }}>AED 30K</span>
-          <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.35)' }}>AED 600K</span>
-        </div>
-      </div>
+      {/* Stacked bar — reward sources */}
+      {(() => {
+        const ternPct = r.isCash
+          ? (TERN_RATE / (TERN_RATE + (r.ccRate > 0 ? r.ccRate / 100 : 0) + 0.0001)) * 100
+          : 50;
+        const cardPct = r.ccRate > 0 ? 100 - ternPct : 0;
+        const showCard = r.ccRate > 0;
+        return (
+          <div style={{ border: '0.5px solid rgba(7,59,76,0.1)', borderRadius: 12, padding: '1rem 1.25rem' }}>
+            <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(7,59,76,0.4)', marginBottom: 10 }}>
+              Where your rewards come from
+            </p>
+            <div style={{ display: 'flex', borderRadius: 8, height: 14, overflow: 'hidden', gap: 2 }}>
+              <div style={{ width: `${ternPct}%`, background: '#15EAAD', borderRadius: showCard ? '8px 0 0 8px' : 8, transition: 'width 400ms ease' }} />
+              {showCard && (
+                <div style={{ flex: 1, background: '#4DB6CE', borderRadius: '0 8px 8px 0', transition: 'flex 400ms ease' }} />
+              )}
+              {!showCard && (
+                <div style={{ flex: 1, background: 'rgba(7,59,76,0.08)', borderRadius: '0 8px 8px 0' }} />
+              )}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 7 }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.5)' }}>
+                <span style={{ width: 8, height: 8, borderRadius: 2, background: '#15EAAD', display: 'inline-block' }} />
+                Tern 2%
+              </span>
+              {showCard && (
+                <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.5)' }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: '#4DB6CE', display: 'inline-block' }} />
+                  Your card
+                </span>
+              )}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -232,7 +252,7 @@ export default function RewardsCalculator() {
   };
 
   return (
-    <section className="section-light grad-divider" style={{ padding: '96px 0' }}>
+    <section className="section-light grad-divider" style={{ padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
       <style dangerouslySetInnerHTML={{ __html: SLIDER_CSS }} />
 
       <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
@@ -242,21 +262,20 @@ export default function RewardsCalculator() {
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(28px, 3.5vw, 48px)',
+            fontSize: 'clamp(32px, 4vw, 56px)',
             lineHeight: 1.1,
             letterSpacing: '-0.01em',
             color: 'var(--teal)',
             marginBottom: 16,
-            maxWidth: '65%',
-            minWidth: 260,
+            maxWidth: 580,
           }}
         >
           See how hard your<br />
-          <span style={{ color: 'var(--mint)' }}>rent can work.</span>
+          <span style={{ color: 'var(--mint)' }}>rent can work</span>
         </h2>
 
         <p className="reveal" style={{ fontFamily: 'var(--font-manrope)', fontSize: 16, color: 'rgba(7,59,76,0.55)', marginBottom: 48, transitionDelay: '80ms', lineHeight: 1.6 }}>
-          Most Dubai renters leave <strong style={{ color: 'var(--teal)', fontWeight: 600 }}>AED 3,000+</strong> on the table every year.
+          Most UAE renters leave <strong style={{ color: 'var(--teal)', fontWeight: 600 }}>AED 2,000+</strong> on the table every year.
         </p>
 
         {/* Calculator card */}
@@ -266,7 +285,7 @@ export default function RewardsCalculator() {
             background: 'var(--white)',
             border: '1px solid rgba(7,59,76,0.09)',
             borderRadius: 12,
-            padding: '40px',
+            padding: 'clamp(20px, 4vw, 40px)',
             boxShadow: '0 2px 8px rgba(7,59,76,0.04), 0 12px 32px rgba(7,59,76,0.06)',
             borderTop: '2px solid transparent',
             backgroundImage: 'linear-gradient(white, white), linear-gradient(90deg, #15EAAD, #4DB6CE)',
@@ -282,7 +301,7 @@ export default function RewardsCalculator() {
               <div style={{ marginBottom: '1.5rem' }}>
                 <label style={labelStyle}>Annual rent</label>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
-                  <span style={{ fontFamily: 'var(--font-unbounded)', fontSize: 22, fontWeight: 700, color: 'var(--teal)' }}>
+                  <span style={{ fontFamily: 'var(--font-unbounded)', fontSize: 25, fontWeight: 700, color: 'var(--teal)' }}>
                     AED&nbsp;{rent.toLocaleString()}
                   </span>
                 </div>
@@ -367,9 +386,6 @@ export default function RewardsCalculator() {
                 </div>
               </div>
 
-              <p style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.4)', marginTop: 8 }}>
-                No fee to you. No change for your landlord.
-              </p>
             </div>
 
             {/* Right — results */}

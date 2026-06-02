@@ -372,3 +372,102 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ── Responsive section padding ── */
+.section-pad {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
+@media (min-width: 1024px) {
+  .section-pad {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+}
+
+/* ── Provocation section — emphasis breathing room ── */
+.section-provoc {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+@media (min-width: 768px) {
+  .section-provoc {
+    padding-top: 112px;
+    padding-bottom: 112px;
+  }
+}
+@media (min-width: 1024px) {
+  .section-provoc {
+    padding-top: 140px;
+    padding-bottom: 140px;
+  }
+}
+
+/* ── Results panel: sticky only on tablet+ ── */
+.results-sticky {
+  position: static;
+}
+@media (min-width: 768px) {
+  .results-sticky {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+/* ── Table scroll wrapper with fade masks ── */
+.table-scroll {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-scroll::before,
+.table-scroll::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  pointer-events: none;
+  z-index: 2;
+}
+.table-scroll::before {
+  left: 0;
+  background: linear-gradient(to right, var(--light), transparent);
+}
+.table-scroll::after {
+  right: 0;
+  background: linear-gradient(to left, var(--light), transparent);
+}
+
+/* ── Mechanism section: two-panel layout ── */
+.mechanism-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .mechanism-grid {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+}
+.mechanism-connector {
+  display: none;
+}
+@media (min-width: 768px) {
+  .mechanism-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 8px;
+  }
+}

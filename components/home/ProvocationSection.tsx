@@ -2,7 +2,7 @@ export default function ProvocationSection() {
   return (
     <section
       className="section-light grad-divider"
-      style={{ padding: '140px 0', overflow: 'hidden' }}
+      style={{ overflow: 'hidden', padding: 'clamp(80px, 14vw, 140px) 0', background: 'linear-gradient(to top left, #FFFFFF 0%, var(--light) 100%)' }}
     >
       <div
         className="px-6 md:px-12"
@@ -13,7 +13,7 @@ export default function ProvocationSection() {
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(28px, 4vw, 52px)',
+            fontSize: 'clamp(32px, 4.6vw, 60px)',
             lineHeight: 1.2,
             letterSpacing: '-0.02em',
             color: 'var(--teal)',

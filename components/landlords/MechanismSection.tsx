@@ -1,6 +1,16 @@
+const CSS = `
+.mechanism-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.mechanism-connector { display: none; }
+@media (min-width: 768px) {
+  .mechanism-grid { grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: stretch; }
+  .mechanism-connector { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 0 8px; }
+}
+`;
+
 export default function MechanismSection() {
   return (
-    <section className="section-light" style={{ padding: '72px 0 80px' }}>
+    <section className="section-light grad-divider" style={{ padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="px-6 md:px-12" style={{ maxWidth: 900, margin: '0 auto', width: '100%' }}>
 
         {/* The statement */}
@@ -26,16 +36,8 @@ export default function MechanismSection() {
         </p>
 
         {/* Two sides + Tern in the middle */}
-        <div
-          className="reveal"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto 1fr',
-            alignItems: 'stretch',
-            gap: 24,
-            transitionDelay: '100ms',
-          }}
-        >
+        <div className="reveal mechanism-grid" style={{ transitionDelay: '100ms' }}>
+
           {/* Tenant side */}
           <div style={{
             background: '#FFFFFF',
@@ -50,7 +52,7 @@ export default function MechanismSection() {
             {[
               { headline: 'Pay by credit card', sub: 'Any UAE-issued card, no bank transfer hassle' },
               { headline: 'Earn rewards', sub: 'Points on every rent payment, every month' },
-              { headline: 'Split when needed', sub: 'Request instalment flexibility, when life happens' },
+              { headline: 'Split when needed', sub: 'Request installment flexibility' },
             ].map((item) => (
               <div key={item.headline} style={{ marginBottom: 18 }}>
                 <div style={{ fontFamily: 'var(--font-manrope)', fontWeight: 700, fontSize: 15, color: 'rgba(7,59,76,0.9)', marginBottom: 3 }}>
@@ -63,8 +65,8 @@ export default function MechanismSection() {
             ))}
           </div>
 
-          {/* Tern centre mark */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '0 8px' }}>
+          {/* Tern centre mark — hidden on mobile, shown as column connector on tablet+ */}
+          <div className="mechanism-connector">
             <div style={{
               width: 52,
               height: 52,

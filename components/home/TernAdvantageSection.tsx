@@ -98,7 +98,7 @@ export default function RewardsPartnersSection() {
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(28px, 3.5vw, 48px)',
+            fontSize: 'clamp(32px, 4vw, 56px)',
             lineHeight: 1.1,
             letterSpacing: '-0.01em',
             color: 'var(--mint)',

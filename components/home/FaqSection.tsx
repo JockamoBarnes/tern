@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 const faqs = [
   {
@@ -84,6 +85,12 @@ export default function FaqSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-12">
+          <Link href="/resources" className="btn-cta-sm">
+            See all questions
+          </Link>
         </div>
       </div>
     </section>

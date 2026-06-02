@@ -6,7 +6,6 @@ const CYCLING_WORDS = [
   'freeloading',
   'doing nothing',
   'wasted',
-  'left behind',
 ];
 
 export default function HeroSection() {
@@ -40,10 +39,19 @@ export default function HeroSection() {
         backgroundColor: 'var(--teal)',
       }}
     >
-      {/* Subtle mesh — warmth without motion competing with the headline */}
-      <div className="blob-1" style={{ position: 'absolute', top: '-10%', right: '-5%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.18) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none' }} />
-      <div className="blob-2" style={{ position: 'absolute', bottom: '-15%', left: '15%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.12) 0%, transparent 65%)', filter: 'blur(110px)', pointerEvents: 'none' }} />
-      <div className="blob-3" style={{ position: 'absolute', top: '20%', left: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.08) 0%, transparent 65%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+      {/* SVG grain texture — tactile luminosity */}
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, opacity: 0.18 }} aria-hidden="true">
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grain)" />
+      </svg>
+
+      {/* Blobs */}
+      <div className="blob-1" style={{ position: 'absolute', top: '-10%', right: '-5%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.35) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
+      <div className="blob-2" style={{ position: 'absolute', bottom: '-15%', left: '15%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.25) 0%, transparent 65%)', filter: 'blur(110px)', pointerEvents: 'none', zIndex: 0 }} />
+      <div className="blob-3" style={{ position: 'absolute', top: '20%', left: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.18) 0%, transparent 65%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
 
       <div
         className="px-6 md:px-12"
@@ -67,7 +75,7 @@ export default function HeroSection() {
           style={{
             fontFamily: 'var(--font-unbounded)',
             fontWeight: 700,
-            fontSize: 'clamp(40px, 6vw, 80px)',
+            fontSize: 'clamp(46px, 7vw, 92px)',
             lineHeight: 1.08,
             letterSpacing: '-0.03em',
             color: 'rgba(240,250,250,0.95)',
@@ -99,7 +107,7 @@ export default function HeroSection() {
               {CYCLING_WORDS[wordIdx]}
             </span>
           </span>
-          for too long.
+          for too long
         </h1>
 
         {/* Anchor sentence */}
@@ -116,29 +124,46 @@ export default function HeroSection() {
             transitionDelay: '80ms',
           }}
         >
-          Pay rent with your credit card — directly to your landlord, on time, every time. Rewards are just the bonus.
+          Its time your rent worked as hard as you do. Pay rent with your credit card while earning rewards with no fee.
         </p>
 
         {/* CTA */}
         <div className="reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 28, transitionDelay: '160ms' }}>
           <a href="#download" className="btn-cta">
-            Pay Rent with Your Card
+            Get Started
           </a>
         </div>
 
         {/* Trust cluster */}
-        <p
+        <div
           className="reveal"
           style={{
-            fontFamily: 'var(--font-manrope)',
-            fontWeight: 500,
-            fontSize: 12,
-            color: 'rgba(240,250,250,0.4)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px 16px',
             transitionDelay: '240ms',
           }}
         >
-          Start at any point in your lease&nbsp;&nbsp;·&nbsp;&nbsp;No fees for you&nbsp;&nbsp;·&nbsp;&nbsp;Works with any UAE credit card
-        </p>
+          {['Start at any point in your lease', 'No fees for you', 'Works with any UAE credit card'].map((item, i) => (
+            <span
+              key={item}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 16,
+                fontFamily: 'var(--font-manrope)',
+                fontWeight: 500,
+                fontSize: 12,
+                color: 'rgba(240,250,250,0.4)',
+              }}
+            >
+              {i > 0 && <span aria-hidden="true" style={{ color: 'rgba(240,250,250,0.2)' }}>·</span>}
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );

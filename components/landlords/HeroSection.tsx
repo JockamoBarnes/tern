@@ -44,6 +44,15 @@ export default function LandlordHeroSection() {
           textAlign: 'center',
         }}
       >
+        {/* SVG grain texture */}
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, opacity: 0.18 }} aria-hidden="true">
+          <filter id="landlord-grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#landlord-grain)" />
+        </svg>
+
         {/* Mesh gradient shader — 4 layered animated blobs */}
         <div className="mesh-1" style={{
           position: 'absolute', top: '-20%', left: '-10%',
@@ -81,7 +90,7 @@ export default function LandlordHeroSection() {
             style={{
               fontFamily: 'var(--font-unbounded)',
               fontWeight: 700,
-              fontSize: 'clamp(32px, 5.2vw, 74px)',
+              fontSize: 'clamp(42px, 6.5vw, 88px)',
               lineHeight: 1.12,
               letterSpacing: '-0.025em',
               marginBottom: 48,
@@ -101,7 +110,7 @@ export default function LandlordHeroSection() {
               backgroundClip: 'text',
               filter: 'drop-shadow(0 0 32px rgba(21,234,173,0.4))',
             }}>
-              job easier.
+              job easier
             </span>
           </h1>
 
@@ -117,7 +126,7 @@ export default function LandlordHeroSection() {
               href="https://wa.me/971556386383"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-glass"
+              className="btn-ghost"
               style={{ fontSize: 15, padding: '16px 32px' }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true">
