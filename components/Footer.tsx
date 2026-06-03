@@ -111,9 +111,9 @@ export default function Footer() {
           © {new Date().getFullYear()} Tern App Technologies Co. LLC
         </span>
         <span style={{ color: 'rgba(238,247,248,0.12)' }}>·</span>
-        <Link href="/legal/privacy" style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(238,247,248,0.22)', textDecoration: 'none' }}>Privacy Policy</Link>
+        <Link href="/privacy-policy" style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(238,247,248,0.22)', textDecoration: 'none' }}>Privacy Policy</Link>
         <span style={{ color: 'rgba(238,247,248,0.12)' }}>·</span>
-        <Link href="/legal/terms" style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(238,247,248,0.22)', textDecoration: 'none' }}>Terms &amp; Conditions</Link>
+        <Link href="/terms-conditions" style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, color: 'rgba(238,247,248,0.22)', textDecoration: 'none' }}>Terms &amp; Conditions</Link>
       </div>
 
     </footer>
