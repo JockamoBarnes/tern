@@ -1,9 +1,11 @@
 'use client';
 
+import Image from 'next/image';
+
 const logos = [
-  { name: 'Khaleej Times', src: '/img/logo-khaleejtimes.webp' },
-  { name: 'Dubai Daily',   src: '/img/logo-dubaidaily.webp'   },
-  { name: 'Zawya',         src: '/img/logo-zawya.webp'        },
+  { name: 'Khaleej Times', src: '/img/logo-khaleejtimes.webp', w: 300, h: 100 },
+  { name: 'Dubai Daily',   src: '/img/logo-dubaidaily.webp',   w: 200, h: 100 },
+  { name: 'Zawya',         src: '/img/logo-zawya.webp',        w: 275, h: 100 },
 ];
 
 export default function PressSection() {
@@ -45,12 +47,13 @@ export default function PressSection() {
         </span>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 56 }}>
-          {logos.map(({ name, src }) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+          {logos.map(({ name, src, w, h }) => (
+            <Image
               key={name}
               src={src}
               alt={name}
+              width={w}
+              height={h}
               style={{
                 height: 32,
                 width: 'auto',
@@ -59,8 +62,8 @@ export default function PressSection() {
                 transition: 'opacity 200ms ease',
                 flexShrink: 0,
               }}
-              onMouseEnter={(e) => ((e.target as HTMLImageElement).style.opacity = '0.9')}
-              onMouseLeave={(e) => ((e.target as HTMLImageElement).style.opacity = '0.45')}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.9')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.45')}
             />
           ))}
         </div>

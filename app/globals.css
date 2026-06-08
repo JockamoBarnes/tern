@@ -471,3 +471,33 @@ body {
     padding: 0 8px;
   }
 }
+
+/* ── Footer: responsive stacking ── */
+.footer-main-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .footer-main-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0 48px;
+  }
+}
+.footer-about {
+  font-family: var(--font-manrope);
+  font-size: 11px;
+  line-height: 1.65;
+  color: rgba(238,247,248,0.38);
+  margin: 0;
+  max-width: 340px;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .footer-about {
+    text-align: left;
+  }
+}

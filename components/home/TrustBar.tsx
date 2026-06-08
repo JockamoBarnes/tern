@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function TrustBar() {
   return (
     <div style={{ background: 'var(--bg-hero)' }}>
@@ -24,10 +26,12 @@ export default function TrustBar() {
           />
 
           {/* UAE Central Bank */}
-          <img
+          <Image
             src="/img/UAE_Central_Bank_Logo.png"
             alt="UAE Central Bank"
-            style={{ height: 36, opacity: 0.7, filter: 'brightness(0) invert(1)' }}
+            width={643}
+            height={155}
+            style={{ height: 36, width: 'auto', opacity: 0.7, filter: 'brightness(0) invert(1)' }}
           />
         </div>
       </div>

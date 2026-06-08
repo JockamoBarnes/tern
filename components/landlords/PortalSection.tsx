@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const callouts = [
   { label: 'Manage multiple properties in one place', top: '12%',  left: '3%'   },
   { label: 'See who\'s paid and who hasn\'t',         top: '18%',  right: '3%'  },
@@ -73,10 +75,12 @@ export default function PortalSection() {
               <div style={{ width: 11, height: 11, borderRadius: '50%', background: 'rgba(255,255,255,0.18)' }} />
               <div style={{ width: 11, height: 11, borderRadius: '50%', background: 'rgba(21,234,173,0.35)' }} />
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/img/img-portalmockup.webp"
               alt="Tern landlord portal"
+              width={688}
+              height={348}
+              priority
               style={{ width: '100%', height: 'auto', display: 'block' }}
             />
           </div>

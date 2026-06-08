@@ -9,7 +9,7 @@ const CSS = `
 .gains-b     { grid-column: 1 / 2; grid-row: 2; }
 .gains-c     { grid-column: 2 / 3; grid-row: 2; }
 .gains-yield { grid-column: 3 / 4; grid-row: 2; }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .gains-bento { grid-template-columns: 1fr; }
   .gains-hero, .gains-split, .gains-b, .gains-c, .gains-yield { grid-column: auto; grid-row: auto; margin-top: 0 !important; }
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 const categories = [
   {
@@ -62,11 +63,13 @@ export default function ExperiencesSection() {
             pointerEvents: 'none',
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={cat.photo}
             alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', filter: 'brightness(0.5)' }}
+            fill
+            sizes="100vw"
+            priority={i === 0}
+            style={{ objectFit: 'cover', objectPosition: 'center', filter: 'brightness(0.5)' }}
           />
         </div>
       ))}

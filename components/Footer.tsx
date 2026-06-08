@@ -74,22 +74,14 @@ export default function Footer() {
 
       {/* Main row: logo · about · social */}
       <div
-        className="mx-auto px-6 md:px-12"
-        style={{ maxWidth: 1200, padding: '36px 24px 28px', display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: '0 48px' }}
+        className="footer-main-grid mx-auto px-6 md:px-12"
+        style={{ maxWidth: 1200, padding: '36px 24px 28px' }}
       >
         <Link href="/" aria-label="Tern home" style={{ flexShrink: 0 }}>
           {logo}
         </Link>
 
-        <p style={{
-          fontFamily: 'var(--font-manrope)',
-          fontSize: 11,
-          lineHeight: 1.65,
-          color: 'rgba(238,247,248,0.38)',
-          margin: 0,
-          textAlign: 'left',
-          maxWidth: 340,
-        }}>
+        <p className="footer-about">
           Tern is a rent-payment platform built by people who got tired of watching their biggest monthly payment earn nothing. We&rsquo;re working to make rent earn its keep for everyone across the UAE.
         </p>
 
