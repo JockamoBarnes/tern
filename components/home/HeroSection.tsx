@@ -129,7 +129,7 @@ export default function HeroSection() {
 
         {/* CTA */}
         <div className="reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 28, transitionDelay: '160ms' }}>
-          <a href="#download" className="btn-cta">
+          <a href="http://onelink.to/q5yb7z" target="_blank" rel="noopener noreferrer" className="btn-cta">
             Get Started
           </a>
         </div>

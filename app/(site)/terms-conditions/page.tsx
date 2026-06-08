@@ -1,6 +1,16 @@
 export const metadata = {
-  title: 'Terms & Conditions — Tern',
-  description: 'The terms governing your use of the Tern platform.',
+  title: {
+    absolute: 'Terms & Conditions | Tern',
+  },
+  description:
+    "Tern's terms and conditions — the rules governing use of the Tern rent payment platform and rewards programme in the UAE.",
+  alternates: {
+    canonical: '/terms-conditions',
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function TermsConditionsPage() {

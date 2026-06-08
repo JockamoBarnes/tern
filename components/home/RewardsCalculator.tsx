@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 const FREQ_LABELS: Record<number, string> = { 12: 'month', 4: 'quarter', 2: 'six months', 1: 'year' };
-const TERN_RATE = 0.02;
+const TERN_RATE = 0.012;
 const MIN_RENT = 30000;
 const MAX_RENT = 600000;
 
@@ -168,7 +168,7 @@ function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
         )}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 1.25rem', borderBottom: '0.5px solid rgba(7,59,76,0.08)' }}>
           <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.55)', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ background: 'rgba(21,234,173,0.12)', color: '#0B8A62', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 6, letterSpacing: '0.04em' }}>Tern 2%</span>
+            <span style={{ background: 'rgba(21,234,173,0.12)', color: '#0B8A62', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 6, letterSpacing: '0.04em' }}>Tern</span>
           </span>
           <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 12, fontWeight: 600, color: '#0B8A62' }}>{r.ternBreakLabel}</span>
         </div>
@@ -202,7 +202,7 @@ function ResultsPanel({ r, rent }: { r: Results; rent: number }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 7 }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.5)' }}>
                 <span style={{ width: 8, height: 8, borderRadius: 2, background: '#15EAAD', display: 'inline-block' }} />
-                Tern 2%
+                Tern
               </span>
               {showCard && (
                 <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'var(--font-manrope)', fontSize: 10, color: 'rgba(7,59,76,0.5)' }}>

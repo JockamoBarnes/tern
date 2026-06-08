@@ -255,7 +255,7 @@ export default function FiveGainsSection() {
             <div style={{ position: 'relative', zIndex: 1 }}>
               <div style={{ fontFamily: 'var(--font-manrope)', fontWeight: 700, fontSize: 15, color: 'rgba(240,250,250,0.55)', marginBottom: 8 }}>Higher portfolio yield</div>
               <span style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 'clamp(44px, 4.6vw, 62px)', lineHeight: 1, letterSpacing: '-0.035em', color: '#15EAAD', display: 'block', marginBottom: 10 }}>↑5%</span>
-              <div style={{ fontFamily: 'var(--font-manrope)', fontWeight: 500, fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.55, marginBottom: 20 }}>More on-time payments, fewer vacancies, new income via Split.</div>
+              <div style={{ fontFamily: 'var(--font-manrope)', fontWeight: 500, fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.55, marginBottom: 20 }}>More on-time payments, fewer vacancies, new income streams.</div>
               <div style={{ display: 'flex', alignItems: 'flex-end', gap: 5, height: 48 }}>
                 {[
                   { h: '35%', cls: 'bar-1' },

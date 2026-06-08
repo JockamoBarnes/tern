@@ -53,7 +53,7 @@ export default function ClosingCTASection() {
 
         {/* Primary CTA */}
         <div className="reveal" style={{ marginBottom: 24, transitionDelay: '80ms' }}>
-          <a href="#" className="btn-cta">
+          <a href="http://onelink.to/q5yb7z" target="_blank" rel="noopener noreferrer" className="btn-cta">
             Get Started Today
           </a>
         </div>

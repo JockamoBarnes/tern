@@ -1,6 +1,16 @@
 export const metadata = {
-  title: 'Privacy Policy — Tern',
-  description: 'How Tern collects, uses, and protects your personal data.',
+  title: {
+    absolute: 'Privacy Policy | Tern',
+  },
+  description:
+    "Tern's privacy policy — how we collect, use, and protect your personal data in accordance with UAE data protection regulations.",
+  alternates: {
+    canonical: '/privacy-policy',
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function PrivacyPolicyPage() {

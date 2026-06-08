@@ -47,44 +47,20 @@ export default function SocialProofSection({ showStats = false, centered = false
             ))}
           </div>
 
-          {/* Stats — landlord page only, hidden on mobile */}
+          {/* Stats — landlord page only, always inline */}
           {showStats && (
-            <div className="hidden md:flex" style={{ alignItems: 'center', gap: 0, flexShrink: 0, borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 24 }}>
-              {[
-                { value: '20,000+', label: 'tenants' },
-                { value: 'AED 100m+', label: 'rent processed' },
-              ].map((m, i) => (
-                <div key={m.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6, paddingLeft: i > 0 ? 24 : 0, borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.15)' : 'none' }}>
-                  <span style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 15, color: '#15EAAD', letterSpacing: '-0.02em' }}>
-                    {m.value}
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-                    {m.label}
-                  </span>
-                </div>
-              ))}
+            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0, borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+                <span style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 13, color: '#15EAAD', letterSpacing: '-0.02em', whiteSpace: 'nowrap' as const }}>
+                  20,000+
+                </span>
+                <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 10, color: 'rgba(255,255,255,0.45)', whiteSpace: 'nowrap' as const }}>
+                  tenants
+                </span>
+              </div>
             </div>
           )}
         </div>
-
-        {/* Stats row on mobile — stacked below logos */}
-        {showStats && (
-          <div className="flex md:hidden" style={{ alignItems: 'center', gap: 20, marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            {[
-              { value: '20,000+', label: 'tenants' },
-              { value: 'AED 100m+', label: 'rent processed' },
-            ].map((m, i) => (
-              <div key={m.label} style={{ display: 'flex', alignItems: 'baseline', gap: 6, paddingLeft: i > 0 ? 20 : 0, borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.15)' : 'none' }}>
-                <span style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700, fontSize: 14, color: '#15EAAD', letterSpacing: '-0.02em' }}>
-                  {m.value}
-                </span>
-                <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 400, fontSize: 10, color: 'rgba(255,255,255,0.45)' }}>
-                  {m.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
 
       </div>
     </section>

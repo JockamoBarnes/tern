@@ -1,9 +1,8 @@
 const rows = [
-  { label: 'Pay with credit card',      cheque: false, bank: false, tern: true  },
-  { label: 'No bounced payment risk',   cheque: false, bank: true,  tern: true  },
-  { label: 'No fee to tenant',          cheque: true,  bank: false, tern: true  },
-  { label: 'Earn rewards on payment',   cheque: false, bank: false, tern: true  },
-  { label: 'Split payment flexibility', cheque: false, bank: false, tern: true  },
+  { label: 'Pay with credit card',    cheque: false, bank: false, tern: true },
+  { label: 'No bounced payment risk', cheque: false, bank: true,  tern: true },
+  { label: 'No fee to tenant',        cheque: true,  bank: true,  tern: true },
+  { label: 'Earn rewards on payment', cheque: false, bank: false, tern: true },
 ];
 
 type Row = {
@@ -166,7 +165,7 @@ export default function ComparisonSection() {
             <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 14, fontWeight: 500, color: 'rgba(7,59,76,0.6)' }}>
               Ready to switch?
             </span>
-            <a href="#download" className="btn-cta-sm">
+            <a href="http://onelink.to/q5yb7z" target="_blank" rel="noopener noreferrer" className="btn-cta-sm">
               Set up in 2 minutes
             </a>
           </div>

@@ -19,7 +19,7 @@ const steps = [
   {
     num: '01',
     title: 'Link your lease',
-    body: 'Upload your Ejari. Verify your tenancy in two minutes.',
+    body: 'Upload your tenancy agreement. Verify your tenancy in two minutes.',
   },
   {
     num: '02',
@@ -34,7 +34,7 @@ const steps = [
   {
     num: '04',
     title: 'You keep the rewards',
-    body: 'Points, miles, or cashback from your credit card plus 2% Tern points on every payment, with no fee.',
+    body: 'Points, miles, or cashback from your credit card, with no fee.',
   },
 ];
 

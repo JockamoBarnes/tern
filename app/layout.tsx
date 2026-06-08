@@ -1,9 +1,6 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geom, Manrope } from 'next/font/google';
 import './globals.css';
-import Nav from '@/components/Nav';
-import Footer from '@/components/Footer';
-import ScrollRevealProvider from '@/components/ScrollRevealProvider';
 
 const unbounded = Geom({
   weight: ['700', '800'],
@@ -19,10 +16,46 @@ const manrope = Manrope({
   display: 'swap',
 });
 
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Tern',
+  url: 'https://ternrewards.com',
+  logo: 'https://ternrewards.com/img/tern-icon.svg',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: 'hello@ternrewards.com',
+    availableLanguage: ['English', 'Arabic'],
+  },
+  sameAs: [
+    'https://instagram.com/tern.app',
+    'https://linkedin.com/company/tern-app',
+  ],
+};
+
 export const metadata: Metadata = {
-  title: 'Tern — Stop Signing Cheques for Free',
+  metadataBase: new URL('https://ternrewards.com'),
+  title: {
+    default: 'Tern',
+    template: '%s | Tern',
+  },
   description:
-    "Post-dated cheques lock up your capital and earn nothing. Tern pays your landlord and puts the rewards in your pocket. UAE's credit card rent payment platform.",
+    "Pay rent by credit card in the UAE and earn miles, points or cashback — with zero fees.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  openGraph: {
+    siteName: 'Tern',
+    locale: 'en_AE',
+    type: 'website',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#073B4C',
 };
 
 export default function RootLayout({
@@ -33,10 +66,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased ${unbounded.variable} ${manrope.variable}`}>
       <body className="min-h-full flex flex-col" style={{ backgroundColor: 'var(--teal)' }}>
-        <Nav />
-        <ScrollRevealProvider />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
+        {children}
       </body>
     </html>
   );

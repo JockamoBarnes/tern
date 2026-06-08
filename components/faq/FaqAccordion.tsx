@@ -65,12 +65,8 @@ const sections = [
         a: 'Two layers. Your credit card pays its normal rewards — miles, points, or cashback — exactly as it would on any other purchase. On top of that, you earn Tern points: 1 point for every 7 AED in rent.',
       },
       {
-        q: 'What are Tern points worth?',
-        a: 'It depends how you redeem. As digital vouchers with 200+ merchants, 1 point ≈ 0.07 AED. As rent cashback, 1 point = 0.05 AED. Total reward value typically lands between 1% and 1.5% of your rent.',
-      },
-      {
         q: 'What can I redeem points for?',
-        a: 'Digital vouchers with 200+ merchants, cashback against your next rent payment, or points transfers to Air Arabia.',
+        a: 'Rewards with 200+ merchants, cashback against your next rent payment, or points transfers to Air Arabia.',
       },
       {
         q: "Do my bank's credit card rewards still apply?",

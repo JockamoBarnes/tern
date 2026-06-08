@@ -1,3 +1,8 @@
+'use client';
+
+import { useState } from 'react';
+import BookDemoModal from '@/components/BookDemoModal';
+
 const CSS = `
 @keyframes mesh-1 {
   0%, 100% { transform: translate(0%, 0%) scale(1); }
@@ -26,8 +31,10 @@ const CSS = `
 `;
 
 export default function LandlordHeroSection() {
+  const [demoOpen, setDemoOpen] = useState(false);
   return (
     <>
+      <BookDemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <section
         style={{
@@ -121,9 +128,9 @@ export default function LandlordHeroSection() {
           </div>
 
           <div className="reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap', transitionDelay: '160ms', marginBottom: 36 }}>
-            <a href="#" className="btn-cta" style={{ fontSize: 15, padding: '16px 36px' }}>Book a demo</a>
+            <button onClick={() => setDemoOpen(true)} className="btn-cta" style={{ fontSize: 15, padding: '16px 36px', cursor: 'pointer', border: 'none' }}>Book a demo</button>
             <a
-              href="https://wa.me/971556386383"
+              href="https://wa.me/971527888532"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost"

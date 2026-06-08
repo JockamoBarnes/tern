@@ -1,6 +1,13 @@
+'use client';
+
+import { useState } from 'react';
+import BookDemoModal from '@/components/BookDemoModal';
+
 export default function LandlordFinalCtaSection() {
+  const [demoOpen, setDemoOpen] = useState(false);
   return (
     <section className="section-navy" style={{ overflow: 'hidden', padding: 'clamp(72px, 12.5vw, 120px) 0' }}>
+      <BookDemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
       {/* Ambient blobs */}
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(21,234,173,0.45) 0%, transparent 60%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 3 }} />
       <div style={{ position: 'absolute', top: '50%', left: '25%', transform: 'translate(-50%, -50%)', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(77,182,206,0.45) 0%, transparent 65%)', filter: 'blur(70px)', pointerEvents: 'none', zIndex: 3 }} />
@@ -49,9 +56,9 @@ export default function LandlordFinalCtaSection() {
         </p>
 
         <div className="reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap', transitionDelay: '160ms' }}>
-          <a href="#" className="btn-cta" style={{ minWidth: 180 }}>Book a demo</a>
+          <button onClick={() => setDemoOpen(true)} className="btn-cta" style={{ minWidth: 180, cursor: 'pointer', border: 'none' }}>Book a demo</button>
           <a
-            href="https://wa.me/971556386383"
+            href="https://wa.me/971527888532"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost"
