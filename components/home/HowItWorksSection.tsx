@@ -1,17 +1,67 @@
 const MOTION_CSS = `
+/* Card lift — matches site standard (150–200ms) */
 .step-card {
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease, border 180ms ease, background-image 180ms ease;
 }
 .step-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(7,59,76,0.07), 0 1px 4px rgba(7,59,76,0.04);
 }
+
+/* Any hovered card gets the payoff (gradient) border */
+.step-card:hover {
+  border: 2px solid transparent !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #15EAAD, #4DB6CE) !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+}
+
+/* Ghost number */
 .ghost-num {
-  transition: opacity 240ms ease, transform 240ms ease;
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 .step-card:hover .ghost-num {
   opacity: 0.18 !important;
   transform: translateY(-4px);
+}
+
+/* ── Mobile: row layout (text left, screenshot right) ── */
+@media (max-width: 767px) {
+  .step-card {
+    flex-direction: row !important;
+    align-items: stretch;
+    padding-right: 0 !important;
+    min-height: 180px !important;
+  }
+  .step-text {
+    padding-bottom: 20px;
+  }
+  .step-img-wrapper {
+    width: 42% !important;
+    flex-shrink: 0;
+    margin-top: 0 !important;
+    margin-left: 16px !important;
+    margin-right: 0 !important;
+  }
+  .step-img {
+    width: 100% !important;
+  }
+}
+
+/* Screenshot: dim/brighten — matches site standard */
+.step-img {
+  transition: opacity 200ms ease, filter 200ms ease;
+  filter: drop-shadow(0 8px 28px rgba(7,59,76,0.18)) drop-shadow(0 2px 8px rgba(7,59,76,0.10));
+}
+/* When any card in the grid is hovered, dim all screenshots (keep shadow) */
+.step-grid:has(.step-card:hover) .step-img {
+  opacity: 0.35;
+  filter: saturate(0.4) brightness(0.8) drop-shadow(0 8px 28px rgba(7,59,76,0.18)) drop-shadow(0 2px 8px rgba(7,59,76,0.10));
+}
+/* Restore the screenshot on the card that is actually hovered (keep shadow) */
+.step-grid .step-card:hover .step-img {
+  opacity: 1 !important;
+  filter: drop-shadow(0 8px 28px rgba(7,59,76,0.18)) drop-shadow(0 2px 8px rgba(7,59,76,0.10)) !important;
 }
 `;
 
@@ -20,21 +70,25 @@ const steps = [
     num: '01',
     title: 'Link your lease',
     body: 'Upload your tenancy agreement. Verify your tenancy in two minutes.',
+    img: '/img/tenant-getstarted-01-ejari.png',
   },
   {
     num: '02',
     title: 'Add your card',
     body: 'Any UAE credit card. Your bank, your rewards programme.',
+    img: '/img/tenant-getstarted-02-addcard.png',
   },
   {
     num: '03',
     title: 'We pay your landlord',
     body: 'Exact amount, exact date, direct to their IBAN.',
+    img: '/img/tenant-getstarted-03-tenancy.png',
   },
   {
     num: '04',
     title: 'You keep the rewards',
     body: 'Points, miles, or cashback from your credit card, with no fee.',
+    img: '/img/tenant-getstarted-04-reward.png',
   },
 ];
 
@@ -69,17 +123,17 @@ export default function HowItWorksSection() {
         </h2>
 
         {/* Steps as cards */}
-        <div className="reveal grid grid-cols-1 md:grid-cols-4 gap-6" style={{ transitionDelay: '160ms' }}>
+        <div className="step-grid reveal grid grid-cols-1 md:grid-cols-4 gap-6" style={{ transitionDelay: '160ms' }}>
 
           {steps.map((step) => (
             <div
               key={step.num}
-              className={`step-card ${step.num === '04' ? 'card-payoff' : 'card-light'}`}
+              className="step-card card-light"
               style={{
-                padding: '36px 28px',
+                padding: '36px 28px 0',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 20,
+                minHeight: 420,
                 position: 'relative',
                 overflow: 'hidden',
               }}
@@ -105,58 +159,72 @@ export default function HowItWorksSection() {
                 {step.num}
               </span>
 
-              {/* Step badge — Manrope (not Unbounded) */}
-              <span
-                style={{
-                  display: 'inline-block',
-                  fontFamily: 'var(--font-manrope)',
-                  fontWeight: 600,
-                  fontSize: 12,
-                  color: 'var(--mint)',
-                  background: 'rgba(21,234,173,0.12)',
-                  border: '1px solid rgba(21,234,173,0.3)',
-                  borderRadius: 6,
-                  padding: '4px 12px',
-                  alignSelf: 'flex-start',
-                  letterSpacing: '0.04em',
-                  position: 'relative',
-                  zIndex: 1,
-                }}
-              >
-                {step.num}
-              </span>
+              {/* Text content */}
+              <div className="step-text" style={{ display: 'flex', flexDirection: 'column', gap: 20, position: 'relative', zIndex: 1, flex: 1 }}>
+                {/* Step badge — Manrope (not Unbounded) */}
+                <span
+                  style={{
+                    display: 'inline-block',
+                    fontFamily: 'var(--font-manrope)',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: 'var(--mint)',
+                    background: 'rgba(21,234,173,0.12)',
+                    border: '1px solid rgba(21,234,173,0.3)',
+                    borderRadius: 6,
+                    padding: '4px 12px',
+                    alignSelf: 'flex-start',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {step.num}
+                </span>
 
-              <h3
-                style={{
-                  fontFamily: 'var(--font-manrope)',
-                  fontWeight: 600,
-                  fontSize: 17,
-                  color: 'var(--teal)',
-                  lineHeight: 1.3,
-                  margin: 0,
-                  position: 'relative',
-                  zIndex: 1,
-                  textWrap: 'balance' as React.CSSProperties['textWrap'],
-                }}
-              >
-                {step.title}
-              </h3>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-manrope)',
+                    fontWeight: 600,
+                    fontSize: 17,
+                    color: 'var(--teal)',
+                    lineHeight: 1.3,
+                    margin: 0,
+                    textWrap: 'balance' as React.CSSProperties['textWrap'],
+                  }}
+                >
+                  {step.title}
+                </h3>
 
-              <p
-                style={{
-                  fontFamily: 'var(--font-manrope)',
-                  fontWeight: 400,
-                  fontSize: 14,
-                  color: 'rgba(7,59,76,0.55)',
-                  lineHeight: 1.6,
-                  margin: 0,
-                  position: 'relative',
-                  zIndex: 1,
-                  textWrap: 'balance' as React.CSSProperties['textWrap'],
-                }}
-              >
-                {step.body}
-              </p>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-manrope)',
+                    fontWeight: 400,
+                    fontSize: 14,
+                    color: 'rgba(7,59,76,0.55)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                    textWrap: 'balance' as React.CSSProperties['textWrap'],
+                  }}
+                >
+                  {step.body}
+                </p>
+              </div>
+
+              {/* Phone screenshot — 75% of card width, centred, sits at card bottom */}
+              {/* Negative margins cancel the card's 28px side padding so width% is of the full card */}
+              <div className="step-img-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', marginTop: 24, marginLeft: -28, marginRight: -28, position: 'relative', zIndex: 1 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={step.img}
+                  alt=""
+                  aria-hidden="true"
+                  className="step-img"
+                  style={{
+                    width: '75%',
+                    display: 'block',
+
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
