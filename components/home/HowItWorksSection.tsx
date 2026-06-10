@@ -30,7 +30,7 @@ const MOTION_CSS = `
   .step-card {
     flex-direction: row !important;
     align-items: stretch;
-    padding-right: 0 !important;
+    padding-right: 20px !important;
     min-height: 180px !important;
   }
   .step-text {

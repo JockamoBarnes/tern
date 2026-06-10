@@ -45,11 +45,19 @@ const categories = [
   },
 ];
 
+const TAB_CSS = `
+/* Shrink tab buttons at 480px so they stay on one row without scrolling */
+@media (max-width: 480px) {
+  .tab-btn { padding: 8px 12px !important; font-size: 12px !important; }
+}
+`;
+
 export default function ExperiencesSection() {
   const [active, setActive] = useState(0);
 
   return (
     <section style={{ position: 'relative', minHeight: '92vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', backgroundColor: 'var(--teal)' }}>
+      <style dangerouslySetInnerHTML={{ __html: TAB_CSS }} />
 
       {/* Crossfading background photos */}
       {categories.map((cat, i) => (
@@ -134,6 +142,7 @@ export default function ExperiencesSection() {
             <button
               key={cat.label}
               onClick={() => setActive(i)}
+              className="tab-btn"
               style={{
                 fontFamily: 'var(--font-manrope)',
                 fontWeight: 600,

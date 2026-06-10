@@ -13,6 +13,17 @@ type Row = {
 };
 
 const MOTION_CSS = `
+/* ── Mobile: hide the two losing columns, keep label + Tern only ── */
+@media (max-width: 540px) {
+  .comparison-table { min-width: 0 !important; }
+  .col-cheque { display: none; }
+  .col-bank   { display: none; }
+  .col-label  { width: auto; padding-right: 16px !important; }
+  .comparison-mobile-note { display: block !important; }
+  .comparison-winner { flex-direction: column; align-items: stretch !important; gap: 12px !important; }
+  .comparison-winner a { text-align: center; }
+}
+
 @keyframes tern-shimmer {
   0%, 60% { transform: translateX(-150%); opacity: 0; }
   65%      { opacity: 1; }
@@ -82,13 +93,13 @@ export default function ComparisonSection() {
 
         {/* Table */}
         <div className="reveal overflow-x-auto" style={{ transitionDelay: '160ms', WebkitOverflowScrolling: 'touch' as 'touch' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
+          <table className="comparison-table" style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
             <thead>
               <tr>
-                <th style={{ width: '40%', padding: '0 0 20px', textAlign: 'left' }} />
+                <th className="col-label" style={{ width: '40%', padding: '0 0 20px', textAlign: 'left' }} />
 
                 {/* Cheque */}
-                <th style={{ padding: '0 0 20px', textAlign: 'center' }}>
+                <th className="col-cheque" style={{ padding: '0 0 20px', textAlign: 'center' }}>
                   <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                     <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(7,59,76,0.35)' }}>Post-dated</span>
                     <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 700, fontSize: 14, color: 'rgba(7,59,76,0.45)' }}>Cheque</span>
@@ -96,7 +107,7 @@ export default function ComparisonSection() {
                 </th>
 
                 {/* Bank transfer */}
-                <th style={{ padding: '0 0 20px', textAlign: 'center' }}>
+                <th className="col-bank" style={{ padding: '0 0 20px', textAlign: 'center' }}>
                   <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                     <span style={{ fontFamily: 'var(--font-manrope)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(7,59,76,0.35)' }}>Bank</span>
                     <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 700, fontSize: 14, color: 'rgba(7,59,76,0.45)' }}>Transfer</span>
@@ -105,7 +116,7 @@ export default function ComparisonSection() {
 
                 {/* Tern — highlighted */}
                 <th style={{ padding: '0 0 20px', textAlign: 'center' }}>
-                  <div style={{
+                  <div className="comparison-tern-th" style={{
                     display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4,
                     background: 'var(--mint)',
                     borderRadius: '8px 8px 0 0',
@@ -126,13 +137,13 @@ export default function ComparisonSection() {
                   className="comparison-row"
                   style={{ borderTop: '1px solid rgba(7,59,76,0.07)' }}
                 >
-                  <td style={{ padding: '16px 16px 16px 0', fontFamily: 'var(--font-manrope)', fontSize: 14, fontWeight: 500, color: 'rgba(7,59,76,0.7)', lineHeight: 1.4 }}>
+                  <td className="col-label" style={{ padding: '16px 16px 16px 0', fontFamily: 'var(--font-manrope)', fontSize: 14, fontWeight: 500, color: 'rgba(7,59,76,0.7)', lineHeight: 1.4 }}>
                     {row.label}
                   </td>
-                  <td style={{ padding: '16px 0', textAlign: 'center' }}>
+                  <td className="col-cheque" style={{ padding: '16px 0', textAlign: 'center' }}>
                     <Check on={!!row.cheque} />
                   </td>
-                  <td style={{ padding: '16px 0', textAlign: 'center' }}>
+                  <td className="col-bank" style={{ padding: '16px 0', textAlign: 'center' }}>
                     <Check on={!!row.bank} />
                   </td>
                   <td className="tern-cell" style={{
@@ -153,9 +164,14 @@ export default function ComparisonSection() {
           </table>
         </div>
 
+        {/* Mobile note — shown only when cheque/bank columns are hidden */}
+        <p className="comparison-mobile-note" style={{ display: 'none', fontFamily: 'var(--font-manrope)', fontSize: 12, color: 'rgba(7,59,76,0.4)', fontStyle: 'italic', marginTop: 12 }}>
+          Tern wins on every metric vs. cheque and bank transfer.
+        </p>
+
         {/* Winner row */}
         <div className="reveal" style={{ marginTop: 32, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', transitionDelay: '240ms' }}>
-          <div style={{
+          <div className="comparison-winner" style={{
             display: 'inline-flex', alignItems: 'center', gap: 16,
             background: 'rgba(21,234,173,0.08)',
             border: '1px solid rgba(21,234,173,0.2)',

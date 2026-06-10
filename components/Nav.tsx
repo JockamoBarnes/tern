@@ -84,6 +84,11 @@ export default function Nav() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Seed state from current scroll position so a reload mid-page shows the correct nav style immediately
+    const y = window.scrollY;
+    setScrolled(y > 24);
+    lastY.current = y;
+
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 24);

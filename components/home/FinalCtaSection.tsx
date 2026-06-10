@@ -45,10 +45,11 @@ export default function ClosingCTASection() {
             letterSpacing: '-0.02em',
             color: 'var(--near-white)',
             marginBottom: 40,
-            maxWidth: 700,
+            maxWidth: 480,
+            textWrap: 'balance' as React.CSSProperties['textWrap'],
           }}
         >
-          Join thousands of renters<br />earning with Tern
+          Join thousands of renters earning with Tern
         </h2>
 
         {/* Primary CTA */}
